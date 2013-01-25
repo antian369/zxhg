@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/zxhg">
+    <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="40" maxWait="12000" name="jdbc/zxhgDB" password="zxhg" type="javax.sql.DataSource" url="jdbc:mysql://127.0.0.1:3306/zxhg?useUnicode=true&amp;characterEncoding=UTF-8" username="zxhg"/>
+    
+    <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
+    <Manager className="com.radiadesign.catalina.session.RedisSessionManager"
+             host="127.0.0.1"
+             port="6379"
+             database="0"
+             maxInactiveInterval="60" />
+</Context>

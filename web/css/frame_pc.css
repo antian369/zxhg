@@ -1,0 +1,221 @@
+/*
+   Document   : my_ui
+   Created on : 2012-2-7, 15:17:25
+   Author     : lianzt
+   Description:
+       Purpose of the stylesheet follows.
+*/
+
+/*body {
+    line-height: 14px; font-size:12px; color:#cccccc;
+    display: block;
+    -webkit-text-size-adjust: none;
+}*/
+body{line-height: 14px; font-size:12px;font-family:Tahoma,Arial,Helvetica,sans-serif;background:#F7F7F7;}
+* {
+    margin: 0; padding: 0;
+}
+h2.title-single {
+    color: #456;
+}
+h2.title {
+    border-bottom: 1px solid white;
+    font-size: 16px;
+    text-shadow: 1px 1px 3px #AAA;
+    margin: 0;
+    padding: 2px 10px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia,"Times New Roman",Times,serif;
+    font-weight: bold;
+}
+h2 {
+    font-size: 20px;
+    line-height: 26px;
+}
+a {
+    color: #047;
+    text-decoration: none;
+}
+form.sub_form {
+    margin-left: 8px;
+    padding: 10px 16px 10px 16px;
+    margin:10px auto 10px auto;
+    font-weight: normal;
+    -moz-border-radius: 11px;
+    -khtml-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    border-radius: 5px;
+    background: white;
+    border: 1px solid #E5E5E5;
+    -moz-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+    -webkit-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+    -khtml-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+    box-shadow: rgba(200,200,200,1) 0 4px 18px;
+}
+.button{
+    background: #222;
+    font-weight: bold;
+    color: #CCC;
+    height: 25px;
+    padding: 2px 10px;
+    border: 1px solid #555;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+.button:hover {
+    color: white;
+}
+.ui-loader { display: none; position: absolute; opacity: .85; z-index: 100; left: 40%; width: 20%; margin-top: -35px; padding: 10px 30px; }
+.ui-loader h1 { font-size: 15px; text-align: center; white-space:normal; margin: auto; padding: inherit;}
+.ui-close-dialog {color:#0058A3;}
+.ui-overlay-shadow {
+    -moz-box-shadow: 0px 0px 12px 			rgba(0,0,0,.6);
+    -webkit-box-shadow: 0px 0px 12px 		rgba(0,0,0,.6);
+    box-shadow: 0px 0px 12px 				rgba(0,0,0,.6);
+}
+.ui-corner-all {
+    -moz-border-radius: 				.6em /*{global-radii-blocks}*/;
+    -webkit-border-radius: 				.6em /*{global-radii-blocks}*/;
+    border-radius: 						.6em /*{global-radii-blocks}*/;
+}
+
+.ui-body-e,
+.ui-dialog.ui-overlay-e {
+    border: 1px solid 		#F7C942 /*{e-body-border}*/;
+    color: 					#333333 /*{e-body-color}*/;
+    text-shadow: 0 /*{e-body-shadow-x}*/ 1px /*{e-body-shadow-y}*/ 0 /*{e-body-shadow-radius}*/ 	#fff /*{e-body-shadow-color}*/;
+    background: 			#faeb9e /*{e-body-background-color}*/;
+    background-image: -webkit-gradient(linear, left top, left bottom, from( #fff /*{e-body-background-start}*/), to( #faeb9e /*{e-body-background-end}*/)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(#fff /*{e-body-background-start}*/, #faeb9e /*{e-body-background-end}*/); /* Chrome 10+, Saf5.1+ */
+    background-image:    -moz-linear-gradient(#fff /*{e-body-background-start}*/, #faeb9e /*{e-body-background-end}*/); /* FF3.6 */
+    background-image:     -ms-linear-gradient(#fff /*{e-body-background-start}*/, #faeb9e /*{e-body-background-end}*/); /* IE10 */
+    background-image:      -o-linear-gradient(#fff /*{e-body-background-start}*/, #faeb9e /*{e-body-background-end}*/); /* Opera 11.10+ */
+    background-image:         linear-gradient(#fff /*{e-body-background-start}*/, #faeb9e /*{e-body-background-end}*/);
+}
+
+.shadow{
+    border: 1px solid #555;  /*/ 边框 /*/
+    background-color: #222;
+    color: #CCC;
+    font-weight: bold;
+    padding: 4px 12px 4px 12px;
+    text-align: center;
+}
+.line{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 20px;
+}
+/*/表格样式/*/
+.tablelist{
+    border: 1px solid #88C1DB;  /*/ 表格边框 /*/
+    border-collapse: collapse;  /*/边框重叠/*/
+    background-color:#EAF5FF;
+    margin-top: 10px;
+}
+/*/表格行名/*/
+.tablelist th{
+    border: 1px solid #88C1DB;  /*/ 边框 /*/
+    background-color: #0B84C9;
+    color: #FFF;
+    font-weight: bold;
+    padding: 4px 12px 4px 12px;
+    text-align: center;
+}
+.tablelist td{
+    border: 1px solid #88C1DB;  /*/ 边框 /*/
+    padding: 4px 10px 4px 10px;
+}
+.tablelist tr:hover, .tablelist tr:active, .tablelist tr:focus{
+    background-color: #FFF;      /* 变色 */
+}
+.table_input tr td{
+    margin-left: auto;
+    height: 35px;
+}
+
+.content_text {
+    font-size: 13px;
+    line-height: 18px;
+    overflow: hidden;
+    padding: 0 10px;
+    margin-left: 3%;
+}
+.table_panel{
+    overflow: auto;
+}
+.info_dialog p{
+    margin-bottom: 5px;
+    line-height: 16px;
+    font-size:15px;
+}
+.ui-progressbar .ui-progressbar-value { background-image: url(/zxhg/images/pbar-ani.gif); }
+#_loading{
+    position: fixed;
+    width: 30%;
+    top: 30%;
+    left: 35%;
+    display: none;
+    text-align: center;
+}
+#_overlay{
+    z-index: 1004;
+    display: none;
+}
+#_progressbar{
+    margin-top: 10px;
+}
+#left_work{
+    float:left;
+    width:20%;
+    height:700px;
+    margin:0px 0px 0px 0.5%;
+    border: 1px solid;
+    overflow: auto;
+    background: #EAF2FD;
+}
+#right_work{
+    height: 700px;
+    width: 77.5%;
+    margin: 0px auto;
+    float:left;
+    border: 1px solid;
+}
+#logo {
+    z-index: 5;
+    position: relative;
+    height: 70px;
+    margin: 0 auto 1px auto;
+    padding-top: 20px;
+    clear: both;
+    background-image: url(/zxhg/images/logo.jpg);
+    color:#EEE;
+    text-align: center;
+    font-size: 28px;
+    font-family:Georgia,"Times New Roman",Times,serif;
+}
+#footer {
+    margin: 1px auto 0;
+    background: #153971;
+    color:#EEE;
+    height: 30px;
+}
+#footer-inside {
+    position: relative;
+    width: 640px;
+    margin: 0 auto;
+    padding: 5px 320px 5px 0;
+    color:#EEE;
+}
+#footer-inside a {
+    border-bottom: 1px dashed #AAA;
+    color:#EEE;
+}
+
+.cl_tr td{
+    padding-left: 5%;
+}

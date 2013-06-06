@@ -185,6 +185,63 @@ public class SystemController {
     }
 
     /**
+     * 返回一个JSChart构建JSON
+     * @param request
+     * @param out
+     * @param serviceCode
+     */
+    @RequestMapping(value = "/chart/data/{service_code}")
+    public void getChartData(HttpServletRequest request, PrintWriter out, HttpServletResponse response,
+            @PathVariable("service_code") String serviceCode) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("开始处理 JSChart 图表请求。");
+        }
+        AbstractCommonData req = null;
+        AbstractCommonData reqHead = null;
+        AbstractCommonData res = null;
+        AbstractCommonData resHead = null;
+        AbstractCommonData JSChart = null;
+        try {
+            req = (AbstractCommonData) request.getAttribute("page_data");
+            reqHead = req.getDataValue("head");
+            //校验服务码
+            if (StringUtil.isNull(serviceCode)) {
+                throw new GlobalException(999992);      //服务码为空
+            }
+            reqHead.putStringValue("service_code", serviceCode);
+            reqHead.putDateValue("send_time", new Date());
+            res = DataConvertFactory.getInstance();     //响应报文
+            resHead = res.getDataValue("head");
+            BaseService.runService(req, reqHead, res, resHead);
+            //取响应报文
+            JSChart = res.getDataValue("JSChart");
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("application/json");      //设置页面格式为json
+            out.print(DataConvertFactory.praseNormJson(JSChart));
+            //设置页面不缓存
+        } catch (GlobalException ge) {
+            if (ge.getErrorCode() > 900000) {
+                log.warn("系统异常：", ge);
+                utilServiceImpl.saveError(ge);
+            } else {
+                log.warn(ge);
+            }
+            throw ge;
+        } catch (DataAccessException e) {
+            log.warn("数据库异常：", e);
+            utilServiceImpl.saveError(e);
+            throw new GlobalException(999998, e);
+        } catch (Exception e) {
+            log.warn("系统未知异常：", e);
+            utilServiceImpl.saveError(e);
+            throw new GlobalException(999999, e);
+        }
+    }
+
+    /**
      * ajax请求的分发器，处理所有的ajax请求
      * @param request
      * @param out

@@ -14,20 +14,17 @@
         <script type="text/javascript" src="<c:url value='/script/jquery-ui-1.8.21.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/script/jquery.dataTables.js' />"></script>
         <!-- InstanceBeginEditable name="doctitle" -->
-        <title><%=SystemUtil.serverDesc%> -- 单耗月报表</title>
+        <title><%=SystemUtil.serverDesc%> -- 甲醇月产量图表</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
-        <script type="text/javascript">
-            var outJson = ${out_json};
-            var dep = '${sessionScope.ses.dep_id.value}';
-        </script>
+        <script type="text/javascript" src="<c:url value='/script/jscharts.js' />"></script>
         <!-- InstanceEndEditable -->
     </head>
     <body>
         <!-- InstanceBeginEditable name="content" -->
-        <div style="margin: 10px auto 10px auto; text-align: center"><h2>单耗月报表</h2></div>
+        <div style="margin: 10px auto 10px auto; text-align: center"><h2>甲醇月产量图表</h2></div>
         <hr />
-        <form action="dh0005.do" method="post" id="search_form" name="search_form" class="sub_form" style="width: 80%;">
+        <form id="search_form" name="search_form" class="sub_form" style="width: 80%;">
             <input type="hidden" id="do" name="do" value="1" />
             <table width="100%" border="0">
                 <tr>
@@ -35,53 +32,36 @@
                         日期：
                         <select id="year" name="year">
                             <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
                         </select>年
                         <select id="month" name="month">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
+                            <option value="01">1</option>
+                            <option value="02">2</option>
+                            <option value="03">3</option>
+                            <option value="04">4</option>
+                            <option value="05">5</option>
+                            <option value="06">6</option>
+                            <option value="07">7</option>
+                            <option value="08">8</option>
+                            <option value="09">9</option>
                             <option value="10">10</option>
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>月
                     <td>
-                        <input type="button" id="sub" value="查询" nouse />
+                        <input type="button" id="search" value="查询" />
                     </td>
                 </tr>
             </table>
         </form>
         <hr />
-        <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
-            <table cellpadding="0" cellspacing="0" border="0" class="display" id="dhbb_table">
-                <thead>
-                    <tr>
-                        <th>日期</th>
-                        <th>吨甲醇耗原煤(t/t)</th>
-                        <th>吨甲醇耗燃煤(t/t)</th>
-                        <th>吨甲醇耗原水(t/t)</th>
-                        <th>吨甲醇耗外电(kwh/t)</th>
-                        <th>吨甲醇耗耗气(千方/t)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${dhbb.value}" var="dhbb" varStatus="xh">
-                        <tr>
-                            <td align="center">${dhbb.dhrq.value}</td>
-                            <td align="center">${dhbb.ym.value}</td>
-                            <td align="center">${dhbb.rm.value}</td>
-                            <td align="center">${dhbb.ys.value}</td>
-                            <td align="center">${dhbb.wd.value}</td>
-                            <td align="center">${dhbb.qh.value}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+        <div align="center" style="width: 750px;height: 450px;margin: 20px auto;background-color: #F7F7F7">
+            <div id="graph">正在加载甲醇日产量图表...</div>
         </div>
         <!-- InstanceEndEditable -->
     </body>

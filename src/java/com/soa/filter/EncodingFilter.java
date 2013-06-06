@@ -95,10 +95,11 @@ public class EncodingFilter implements Filter {
         //表单类型
         String contentType = request.getContentType();
         if (log.isDebugEnabled()) {
-            log.debug("表单类型：" + contentType);
+            log.debug("表单类型:" + contentType);
+            log.debug("表单判断：" + StringUtil.isNull(contentType));
         }
         //文本表单
-        if (StringUtil.isNull(contentType) || contentType.trim().startsWith("application/x-www-form-urlencoded")) {
+        if (StringUtil.isNull(contentType) || !contentType.trim().startsWith("multipart")) {
             Enumeration<String> en = request.getParameterNames();
             String[] valueArr = null;
             String name = "";

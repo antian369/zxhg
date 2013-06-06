@@ -101,7 +101,7 @@ public class DataConvertFactory {
      * @param root xml节点
      */
     private static void structCommonDataDocument(AbstractCommonData acd,
-                                                 Element root) {
+            Element root) {
         Iterator<Entry<String, CommonDataElement>> entryList = acd.entrySet().iterator();
         Entry<String, CommonDataElement> temp = null;
         CommonDataElement data = null;
@@ -119,7 +119,7 @@ public class DataConvertFactory {
      * @param item xml节点
      */
     private static void structElementDataDocument(CommonDataElement data,
-                                                  Element item) {
+            Element item) {
         item.addAttribute("name", data.getName());
         item.addAttribute("type", data.getType());
         item.addAttribute("length", data.getLength() + "");
@@ -381,7 +381,7 @@ public class DataConvertFactory {
      * @param sb Json字符串
      */
     private static void structCommonDataJson(AbstractCommonData acd,
-                                             StringBuilder sb) {
+            StringBuilder sb) {
         Iterator<Entry<String, CommonDataElement>> entryList = acd.entrySet().iterator();
         Entry<String, CommonDataElement> temp = null;
         CommonDataElement data = null;
@@ -404,7 +404,7 @@ public class DataConvertFactory {
      * @param sb Json字符串
      */
     private static void structElementDataJson(CommonDataElement data,
-                                              StringBuilder sb) {
+            StringBuilder sb) {
         sb.append('\'').append(data.getName());
         sb.append("':");
         int i = 0;
@@ -683,7 +683,7 @@ public class DataConvertFactory {
      * @return list
      */
     public static List instanceJsonArray(JSONArray array) throws JSONException,
-                                                                 InstanceDataException {
+            InstanceDataException {
         if (array == null || array.length() == 0) {
             return new LinkedList<AbstractCommonData>();
         }
@@ -722,7 +722,7 @@ public class DataConvertFactory {
      * @param sb Json字符串
      */
     private static void structCommonDataSBJson(AbstractCommonData acd,
-                                             StringBuilder sb) {
+            StringBuilder sb) {
         Iterator<Entry<String, CommonDataElement>> entryList = acd.entrySet().iterator();
         Entry<String, CommonDataElement> temp = null;
         CommonDataElement data = null;
@@ -745,7 +745,7 @@ public class DataConvertFactory {
      * @param sb Json字符串
      */
     private static void structElementDataSBJson(CommonDataElement data,
-                                              StringBuilder sb) {
+            StringBuilder sb) {
         sb.append('\"').append(data.getName());
         sb.append("\":");
         int i = 0;
@@ -776,6 +776,85 @@ public class DataConvertFactory {
             sb.append("\"");
         } else if (CommonDataElement.DATA.equals(data.getType())) {
             structCommonDataSBJson((AbstractCommonData) data.getValue(), sb);       //装载数据包的递归函数
+        } else if (CommonDataElement.STRING.equals(data.getType()) || CommonDataElement.OBJECT.equals(data.getType())) {
+            sb.append("\"");
+            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append("\"");
+        } else {
+            sb.append(data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+        }
+    }
+
+    /**
+     * 把数据包对象解析为标准Json，Key字段使用双引号
+     * 数据包中的object类型的值不能被解析，转换过程中会丢失date和float格式
+     * 数据中的值只区分三种类型 AbstractCommonData、CommonDataElement和String (基本数据类型全部解析为String)
+     * @return 数据包的Json形式
+     */
+    public static String praseNormJson(AbstractCommonData acd) {
+        StringBuilder sb = new StringBuilder();
+        structCommonDataNormJson(acd, sb);        //装载数据包的递归函数
+        return sb.toString();
+    }
+
+    /**
+     * 装载数据包的递归函数
+     * @param acd 数据包对象
+     * @param sb Json字符串
+     */
+    private static void structCommonDataNormJson(AbstractCommonData acd,
+            StringBuilder sb) {
+        Iterator<Entry<String, CommonDataElement>> entryList = acd.entrySet().iterator();
+        Entry<String, CommonDataElement> temp = null;
+        CommonDataElement data = null;
+        int i = 0;
+        sb.append('{');
+        while (entryList.hasNext()) {
+            if (i++ > 0) {
+                sb.append(',');
+            }
+            temp = entryList.next();
+            data = temp.getValue();
+            structElementDataNormJson(data, sb);    //装载数据包中数据元素的递归函数
+        }
+        sb.append('}');
+    }
+
+    /**
+     * 装载数据包中数据元素的递归函数
+     * @param data 数据元素
+     * @param sb Json字符串
+     */
+    private static void structElementDataNormJson(CommonDataElement data,
+            StringBuilder sb) {
+        sb.append("\"").append(data.getName());
+        sb.append("\":");
+        int i = 0;
+        if (CommonDataElement.ARRAY.equals(data.getType())) {
+            sb.append('[');
+            for (Object obj : (List) data.getValue()) {
+                if (i++ > 0) {
+                    sb.append(',');
+                }
+                if (obj instanceof CommonDataElement) {
+                    structElementDataNormJson((CommonDataElement) obj, sb);    //装载数据包中数据元素的递归函数
+                } else if (obj instanceof AbstractCommonData) {
+                    structCommonDataNormJson((AbstractCommonData) obj, sb);    //装载数据包的递归函数
+                } else if (obj instanceof String) {
+                    sb.append("\"");
+                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append("\"");
+                } else {
+                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                }
+            }
+            sb.append(']');
+        } else if (CommonDataElement.DATE.equals(data.getType())) {
+            sb.append("\"");
+            sb.append(DateUtil.detaledFormat((Date) data.getValue()));
+            sb.append("\"");
+        } else if (CommonDataElement.DATA.equals(data.getType())) {
+            structCommonDataNormJson((AbstractCommonData) data.getValue(), sb);       //装载数据包的递归函数
         } else if (CommonDataElement.STRING.equals(data.getType()) || CommonDataElement.OBJECT.equals(data.getType())) {
             sb.append("\"");
             sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));

@@ -37,10 +37,15 @@ $("#year").val(nowDate[0]);
 $("#month").val(nowDate[1]);
 
 $("#search").click(function() {
-    $("#graph").show();
     var year = $("#year").val();
     var month = $("#month").val();
+    var now = getNowDate();
+    if (now < (year + "-" + month + "-01")) {
+        alertMsg("不能大于当前时间！");
+        return;
+    }
+    $("#graph").show();
     myChart.setTitle(year + "-" + month + ' 甲醇月产量');
     myChart.setDataJSON(BaseUrl + "chart/data/S13016.do?search_month=" + year + "-" + month);      //获取甲醇月产量
     myChart.draw();
-});
+}).trigger("click");

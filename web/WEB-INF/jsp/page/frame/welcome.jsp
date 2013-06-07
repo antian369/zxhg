@@ -41,6 +41,7 @@
                 <div id="left_menu">
                     <ul id="menu">
                         <li><a href="<c:url value="/_page/frame/update_psw.do" />" title="修改密码" target="work">修改密码</a></li>
+                        <li><a href="<c:url value="/_page/frame/index.do" />" title="返回首页" target="work">返回首页</a></li>
                         <li><a href="<c:url value="/_page/frame/logout.do" />" title="退出登录" target="work">退出</a></li>
                     </ul>
                 </div>

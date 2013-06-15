@@ -50,17 +50,16 @@ public class GetDhJfreeSc extends BaseService {
         Date begin, end;
         if (StringUtil.isNull(searchMonth)) {     //如果为空，取当月
             begin = new Date();
-            begin = DateUtil.setDay(begin, 1);
-            end = DateUtil.addMonth(begin, 1);
-            searchMonth = DateUtil.defualtFormat(begin);
+            end = DateUtil.setDay(begin, 26);
+            begin = DateUtil.addMonth(end, -1);       //从上个月26号开始
         } else {
-            searchMonth = searchMonth + "-01";      //补全，方便计算
+            searchMonth = searchMonth + "-26";      //补全，方便计算
             try {
-                begin = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
+                end = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
             } catch (InstanceDataException e) {
                 throw new GlobalException(210036);      //日期格式不正确
             }
-            end = DateUtil.addMonth(begin, 1);
+            begin = DateUtil.addMonth(end, -1);
         }
         if(begin.getTime() > new Date().getTime()){
             throw new GlobalException(200032, "查询月份");      //!#!不能大于当前时间

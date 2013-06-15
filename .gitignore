@@ -1,4 +1,3 @@
 # a comment - this is ignored
 build/
 dist/
-install_sql/

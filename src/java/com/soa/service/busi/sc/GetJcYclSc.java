@@ -43,17 +43,16 @@ public class GetJcYclSc extends BaseService {
         Date begin, end, temp;
         if (StringUtil.isNull(searchMonth)) {     //如果为空，取当月
             begin = new Date();
-            begin = DateUtil.setDay(begin, 1);
-            end = DateUtil.addMonth(begin, 1);
-            searchMonth = DateUtil.defualtFormat(begin);
+            end = DateUtil.setDay(begin, 26);
+            begin = DateUtil.addMonth(end, -1);       //从上个月26号开始
         } else {
-            searchMonth = searchMonth + "-01";      //补全，方便计算
+            searchMonth = searchMonth + "-26";      //补全，方便计算
             try {
-                begin = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
+                end = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
             } catch (InstanceDataException e) {
                 throw new GlobalException(210036);      //日期格式不正确
             }
-            end = DateUtil.addMonth(begin, 1);
+            begin = DateUtil.addMonth(end, -1);
         }
         if (log.isDebugEnabled()) {
             log.debug("begin:" + DateUtil.defualtFormat(begin) + ",  end:" + DateUtil.defualtFormat(end));
@@ -76,6 +75,34 @@ public class GetJcYclSc extends BaseService {
             log.debug("\njc map : " + jcMap + "\nhcq map : " + hcqMap);
         }
 
+
+        AbstractCommonData charts = DataConvertFactory.getInstanceEmpty();      //用于存放JSChart的图表数据，包含7种单耗曲线，每种都为一个二维数组
+        out.putDataValue("JSChart", charts);
+        List<List<String>> cc = new LinkedList<List<String>>();     //粗醇
+        List<List<String>> yec = new LinkedList<List<String>>();    //乙二醇
+        charts.putArrayValue("cc", cc);
+        charts.putArrayValue("yec", yec);
+        List<String> tempList = null;
+        double jccl = 0;
+        int i=1;
+        String tempDay = "";
+        //temp从begin开始，大于等于end结束，每次加一天
+        for (temp = begin; temp.getTime() < end.getTime(); temp = DateUtil.addDay(temp, 1)) {
+            tempDay = DateUtil.detaledFormat(temp);
+            if (jcMap.get(tempDay) == null || hcqMap.get(tempDay) == null || hcqMap.get(tempDay) == 0) {
+                jccl = 0.0;
+            } else {
+                jccl = (jcMap.get(tempDay) * 0.97) + (hcqMap.get(tempDay) / 2.2);       //甲醇产量计算公式
+                jccl = round(jccl);
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug(tempDay + "{unit:" + i + ", value : " + jccl + "}");
+            }
+            i++;
+        }
+
+
         //开始组装 JSCharts 图表报文
         AbstractCommonData res = DataConvertFactory.getInstanceEmpty();     //报文根节点
         out.putDataValue("JSChart", res);           //把报文放入响应
@@ -92,26 +119,12 @@ public class GetJcYclSc extends BaseService {
             log.debug("数据格式：" + DataConvertFactory.praseNormJson(JSChart));
         }
         AbstractCommonData dataTemp = null;
-        //temp从begin开始，大于等于end结束，每次加一天
-        int i = 1;
-        String tempDay = "";
-        double jccl = 0;
         for (temp = begin; temp.getTime() < end.getTime(); temp = DateUtil.addDay(temp, 1)) {
             dataTemp = DataConvertFactory.getInstanceEmpty();
             tempDay = DateUtil.detaledFormat(temp);
-            dataTemp.putStringValue("unit", i + "");
-            if (jcMap.get(tempDay) == null || hcqMap.get(tempDay) == null || hcqMap.get(tempDay) == 0) {
-                jccl = 0.0;
-            } else {
-                jccl = (jcMap.get(tempDay) * 0.97) + (hcqMap.get(tempDay) / 2.2);       //甲醇产量计算公式
-                jccl = round(jccl);
-            }
-            if (log.isDebugEnabled()) {
-                log.debug(tempDay + "{unit:" + i + ", value : " + jccl + "}");
-            }
+            dataTemp.putStringValue("unit", temp.getDate() + "");
             dataTemp.putStringValue("value", jccl + "");
             data.add(dataTemp);
-            i++;
         }
     }
 

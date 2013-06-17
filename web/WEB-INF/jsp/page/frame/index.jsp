@@ -43,6 +43,7 @@
             <input type="checkbox" id="show_bar_value" checked /> <label for="show_bar_value">显示数值(精确到个位)</label>
         </div>-->
         <hr />
+        <div style="text-align: center; color: #214D90; font-size: 18px" id="rwwc"></div>
         <%--
         <div style="width: 90%;margin: 10px auto 10px auto">
             <h3><a href="<c:url value="/_page/bq/bq0003.do" />">查看公告</a></h3>

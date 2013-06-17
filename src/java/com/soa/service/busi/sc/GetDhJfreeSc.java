@@ -129,41 +129,11 @@ public class GetDhJfreeSc extends BaseService {
             zqhm.add(temp);
             i++;
         }
-
-
+        //生成横坐标
+        List<String> labelX = new LinkedList<String>();
+        for (; begin.getTime() < end.getTime(); begin = DateUtil.addDay(begin, 1)) {
+            labelX.add(begin.getDate() + "");
+        }
+        out.putArrayValue("LabelX", labelX);
     }
 }
-//以前JfreeChart的代码
-//生成测试数据
-//        List<Double> list = new LinkedList<Double>();
-//        long now = new Date().getTime();
-//        Date beginDate = new Date();
-//        beginDate = DateUtil.setDay(beginDate, 0);
-//        beginDate = DateUtil.setHour(beginDate, 0);
-//        beginDate = DateUtil.setMinute(beginDate, 0);
-//        beginDate = DateUtil.setSecond(beginDate, 1);
-//        long begin = beginDate.getTime();
-//        for (; begin < now; begin += (24L * 3600000)) {
-//            BigDecimal bigDouble = new BigDecimal(Math.random() + 1);
-//            list.add(bigDouble.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-//        }
-//        //end
-//
-//        String title = "产品单耗图";      //标题
-//        String y = "单耗";          //y轴
-//        HttpSession ses = getHttpSession(in);
-//        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-//        for (int i = 0; i < list.size(); i++) {
-//            dcd.setValue(list.get(i), y, (i + 1) + "");
-//        }
-//        try {
-//            JFreeChart chart = ChartFactory.createBarChart3D(title, "日期", "吨甲醇耗原煤(t/t)", dcd, PlotOrientation.VERTICAL, true, true, false);
-//            ReportUtil.DefualtFormatBarChart(chart);        //默认参数设置柱状图
-//            String url = "/" + SystemUtil.serverName + SystemUtil.reportUrl + ServletUtilities.saveChartAsJPEG(chart, 800, 600, ses);
-//            if (log.isDebugEnabled()) {
-//                log.debug("图表url : " + url);
-//            }
-//            out.putStringValue("url", url);
-//        } catch (Exception e) {
-//            throw new GlobalException(220017, e);       //图表生成错误
-//        }

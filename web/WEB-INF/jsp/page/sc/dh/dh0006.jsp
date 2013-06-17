@@ -18,6 +18,7 @@
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
         <script type="text/javascript" src="<c:url value='/script/jscharts.js' />"></script>
+        <!--<script type="text/javascript" src="<c:url value='/script/busi/sc/dh/dh00061.js' />"></script>-->
         <!-- InstanceEndEditable -->
     </head>
     <body>

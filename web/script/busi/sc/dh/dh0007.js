@@ -53,6 +53,11 @@ $("#search").click(function() {
     o.put("search_month", m);
     o.sus = function(data) {
         charts = data.JSChart;
+        var labelX = data.LabelX;
+        for (var i = 0; i < labelX.length; i++) {
+            myChart.setLabelX([i + 1, labelX[i]]);
+        }
+        myChart.setShowXValues(false);
         drawTable("hym");       //默认显示耗原煤
         $(":radio").remove("checked");
         $("#hym").attr("checked", "checked");

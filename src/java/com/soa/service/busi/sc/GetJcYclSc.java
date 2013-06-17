@@ -60,71 +60,49 @@ public class GetJcYclSc extends BaseService {
         //甲醇产量=粗甲醇产量*0.97+送乙二醇合成气/2.2       001*0.97 + 012/2.2
         //select scrq, sum(cl) sum_cl from sc_rcl group by scrq, cpbh having cpbh=? and scrq >= ? and scrq < ?
         //先查询甲醇
-        List<AbstractCommonData> jcList = queryList("get_jc_ycl_sc", "001", begin, end);
-        List<AbstractCommonData> hcqList = queryList("get_jc_ycl_sc", "012", begin, end);
+        List<AbstractCommonData> ccList = queryList("get_jc_ycl_sc", "001", begin, end);
+        List<AbstractCommonData> yecList = queryList("get_jc_ycl_sc", "012", begin, end);
         //把两个数组转成map，方便取数
-        Map<String, Double> jcMap = new HashMap<String, Double>();
-        Map<String, Double> hcqMap = new HashMap<String, Double>();
-        for (AbstractCommonData acd : jcList) {
-            jcMap.put(acd.getStringValue("scrq"), acd.getDoubleValue("sum_cl"));
+        Map<String, Double> ccMap = new HashMap<String, Double>();
+        Map<String, Double> yecMap = new HashMap<String, Double>();
+        for (AbstractCommonData acd : ccList) {
+            ccMap.put(acd.getStringValue("scrq"), acd.getDoubleValue("sum_cl"));
         }
-        for (AbstractCommonData acd : hcqList) {
-            hcqMap.put(acd.getStringValue("scrq"), acd.getDoubleValue("sum_cl"));
+        for (AbstractCommonData acd : yecList) {
+            yecMap.put(acd.getStringValue("scrq"), acd.getDoubleValue("sum_cl"));
         }
         if (log.isDebugEnabled()) {
-            log.debug("\njc map : " + jcMap + "\nhcq map : " + hcqMap);
+            log.debug("\njc map : " + ccMap + "\nyec map : " + yecMap);
         }
 
 
         AbstractCommonData charts = DataConvertFactory.getInstanceEmpty();      //用于存放JSChart的图表数据，包含7种单耗曲线，每种都为一个二维数组
         out.putDataValue("JSChart", charts);
-        List<List<String>> cc = new LinkedList<List<String>>();     //粗醇
-        List<List<String>> yec = new LinkedList<List<String>>();    //乙二醇
-        charts.putArrayValue("cc", cc);
-        charts.putArrayValue("yec", yec);
+        List<List<String>> result = new LinkedList<List<String>>();     //粗醇、乙二醇
+        charts.putArrayValue("result", result);
         List<String> tempList = null;
-        double jccl = 0;
-        int i=1;
+        Double ccz = 0.0, yecz = 0.0;
         String tempDay = "";
         //temp从begin开始，大于等于end结束，每次加一天
         for (temp = begin; temp.getTime() < end.getTime(); temp = DateUtil.addDay(temp, 1)) {
             tempDay = DateUtil.detaledFormat(temp);
-            if (jcMap.get(tempDay) == null || hcqMap.get(tempDay) == null || hcqMap.get(tempDay) == 0) {
-                jccl = 0.0;
+            tempList = new LinkedList<String>();
+            tempList.add("\"" + temp.getDate() + "\"");
+
+            if (ccMap.get(tempDay) == null || ccMap.get(tempDay) == 0) {
+                ccz = 0.0;
             } else {
-                jccl = (jcMap.get(tempDay) * 0.97) + (hcqMap.get(tempDay) / 2.2);       //甲醇产量计算公式
-                jccl = round(jccl);
+                ccz = round(ccMap.get(tempDay) * 0.97);
             }
+            tempList.add(ccz.toString());
 
-            if (log.isDebugEnabled()) {
-                log.debug(tempDay + "{unit:" + i + ", value : " + jccl + "}");
+            if (yecMap.get(tempDay) == null || yecMap.get(tempDay) == 0) {
+                yecz = 0.0;
+            } else {
+                yecz = round(ccMap.get(tempDay) * 0.97);
             }
-            i++;
-        }
-
-
-        //开始组装 JSCharts 图表报文
-        AbstractCommonData res = DataConvertFactory.getInstanceEmpty();     //报文根节点
-        out.putDataValue("JSChart", res);           //把报文放入响应
-        AbstractCommonData JSChart = DataConvertFactory.getInstanceEmpty();
-        res.putDataValue("JSChart", JSChart);
-        List<AbstractCommonData> datasets = new LinkedList<AbstractCommonData>();   //datasets 数组
-        JSChart.putArrayValue("datasets", datasets);     //
-        AbstractCommonData bar = DataConvertFactory.getInstanceEmpty();     //柱状图
-        datasets.add(bar);      //由于产量图只有一个数组项，所以只有一个数组元素
-        bar.putStringValue("type", "bar");      //图表类型为bar
-        List<AbstractCommonData> data = new LinkedList<AbstractCommonData>();       //图表的data数组
-        bar.putArrayValue("data", data);
-        if (log.isDebugEnabled()) {
-            log.debug("数据格式：" + DataConvertFactory.praseNormJson(JSChart));
-        }
-        AbstractCommonData dataTemp = null;
-        for (temp = begin; temp.getTime() < end.getTime(); temp = DateUtil.addDay(temp, 1)) {
-            dataTemp = DataConvertFactory.getInstanceEmpty();
-            tempDay = DateUtil.detaledFormat(temp);
-            dataTemp.putStringValue("unit", temp.getDate() + "");
-            dataTemp.putStringValue("value", jccl + "");
-            data.add(dataTemp);
+            tempList.add(yecz.toString());
+            result.add(tempList);
         }
     }
 

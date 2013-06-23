@@ -26,11 +26,11 @@ function draw(data) {
     nowDate = nowDate.split("-");
     var year = nowDate[0];
     var month = nowDate[1];
-    
+
     var categories = [];
     var series = [];
     series[0] = {"name": "粗醇折精醇", "data": []};
-    series[1] = {"name": "乙二醇折精醇", "data": []};
+    series[1] = {"name": "送乙二醇气折醇", "data": []};
     var result = data.JSChart.result;
     for (var i = 0; i < result.length; i++) {
         categories[i] = result[i][0];
@@ -69,7 +69,7 @@ function draw(data) {
         },
         tooltip: {
             formatter: function() {
-                return '<b>' + year + '-' + month + '-' + this.x + '</b><br/>' +
+                return '<b>' + year + '-' + (this.x > 25 ? month - 1 : month - 0) + '-' + this.x + '</b><br/>' +
                         this.series.name + ': ' + this.y + ' 吨<br/>' +
                         '总计: ' + this.point.stackTotal + ' 吨';
             }
@@ -87,12 +87,12 @@ function draw(data) {
  * 获取任务完成度
  * @returns {undefined}
  */
-function getRwwc(){
+function getRwwc() {
     var o = new AjaxOptions();
     o.isAlert = false;
     o.isPadBack = false;
     o.put("service_code", "S13017");
-    o.sus = function(data){
+    o.sus = function(data) {
         $("#rwwc").html(data.result);
     };
     $.ajax(o);

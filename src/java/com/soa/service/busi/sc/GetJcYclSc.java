@@ -42,18 +42,16 @@ public class GetJcYclSc extends BaseService {
         String searchMonth = in.getStringValue("search_month");
         Date begin, end, temp;
         if (StringUtil.isNull(searchMonth)) {     //如果为空，取当月
-            begin = new Date();
-            end = DateUtil.setDay(begin, 26);
-            begin = DateUtil.addMonth(end, -1);       //从上个月26号开始
-        } else {
-            searchMonth = searchMonth + "-26";      //补全，方便计算
-            try {
-                end = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
-            } catch (InstanceDataException e) {
-                throw new GlobalException(210036);      //日期格式不正确
-            }
-            begin = DateUtil.addMonth(end, -1);
+            searchMonth = DateUtil.defualtFormat(new Date()).substring(0, 7);
         }
+        searchMonth = searchMonth + "-26";      //补全，方便计算
+        try {
+            end = DateUtil.formatDate(searchMonth, "yyyy-MM-dd");
+        } catch (InstanceDataException e) {
+            throw new GlobalException(210036);      //日期格式不正确
+        }
+        begin = DateUtil.addMonth(end, -1);
+
         if (log.isDebugEnabled()) {
             log.debug("begin:" + DateUtil.defualtFormat(begin) + ",  end:" + DateUtil.defualtFormat(end));
         }

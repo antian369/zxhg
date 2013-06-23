@@ -45,7 +45,7 @@ function draw(data) {
     var categories = [];
     var series = [];
     series[0] = {"name": "粗醇折精醇", "data": []};
-    series[1] = {"name": "乙二醇折精醇", "data": []};
+    series[1] = {"name": "送乙二醇气折醇", "data": []};
     var result = data.JSChart.result;
     for (var i = 0; i < result.length; i++) {
         categories[i] = result[i][0];
@@ -84,7 +84,7 @@ function draw(data) {
         },
         tooltip: {
             formatter: function() {
-                return '<b>' + year + '-' + month + '-' + this.x + '</b><br/>' +
+                return '<b>' + year + '-' + (this.x > 25 ? month - 1 : month - 0) + '-' + this.x + '</b><br/>' +
                         this.series.name + ': ' + this.y + ' 吨<br/>' +
                         '总计: ' + this.point.stackTotal + ' 吨';
             }

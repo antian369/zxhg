@@ -61,7 +61,7 @@
             </table>
         </form>
         <hr />
-        <div id="container" style="min-width: 700px; height: 450px; margin: 0 auto" align="center"></div>
+        <div id="container" style="width: 100%; height: 450px; margin: 0 auto" align="center"></div>
         <!-- InstanceEndEditable -->
     </body>
     <!-- InstanceEnd --></html>

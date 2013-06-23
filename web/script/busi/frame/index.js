@@ -8,11 +8,11 @@ o.put("service_code", "S13016");
 o.isAlert = false;
 o.sus = function(data) {
     draw(data);
-    $("#graph").fadeIn(300);
+    $("#container").fadeIn(300);
     getRwwc();
 };
 o.fal = function() {
-    $("#graph").hide();
+    $("#container").hide();
 };
 $.ajax(o);
 
@@ -26,39 +26,61 @@ function draw(data) {
     nowDate = nowDate.split("-");
     var year = nowDate[0];
     var month = nowDate[1];
-    var myChart = new JSChart('graph', 'bar');
-    myChart.setErrors(false);
-    myChart.setTitleFontSize(16);
-    myChart.setTitleColor('#555');
-    myChart.setAxisNameX('');
-    myChart.setAxisNameY('单位：吨');
-    myChart.setAxisColor('#C4C4C4');
-    myChart.setAxisNameFontSize(16);
-    myChart.setAxisNameColor('#555');
-    myChart.setAxisValuesColor('#777');
-    myChart.setAxisColor('#B5B5B5');
-    myChart.setAxisWidth(1);
-    myChart.setTextPaddingLeft(0);
-    myChart.setBarValuesColor('#2F6D99');
-    myChart.setBarOpacity(0.5);
-    myChart.setAxisPaddingTop(60);
-    myChart.setAxisPaddingBottom(40);
-    myChart.setAxisPaddingLeft(60);
-    myChart.setBarBorderWidth(0);
-    myChart.setBarSpacingRatio(50);
-    myChart.setBarOpacity(0.9);
-    myChart.setFlagRadius(6);
-    myChart.setSize(750, 450);
-    myChart.setLegendShow(true);
-    myChart.setBarValues(false);
-    myChart.setBackgroundImage(BaseUrl + 'images/chart_bg.jpg');
-    myChart.setTitle(year + "-" + month + ' 甲醇月产量');
-    myChart.setDataArray(data.JSChart.result, 'bar');
-    myChart.setBarColor('#2D6B96', 1);
-    myChart.setBarColor('#9CCEF0', 2);
-    myChart.setLegendForBar(1, '粗醇折精醇');
-    myChart.setLegendForBar(2, '乙二醇折精醇');
-    myChart.draw();
+    
+    var categories = [];
+    var series = [];
+    series[0] = {"name": "粗醇折精醇", "data": []};
+    series[1] = {"name": "乙二醇折精醇", "data": []};
+    var result = data.JSChart.result;
+    for (var i = 0; i < result.length; i++) {
+        categories[i] = result[i][0];
+        series[0].data[i] = result[i][1];
+        series[1].data[i] = result[i][2];
+    }
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: year + "年" + month + '月甲醇产量图'
+        },
+        xAxis: {
+            title: {
+                text: '日期'
+            },
+            categories: categories
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '单位：吨'
+            }
+        },
+        legend: {
+            align: 'right',
+            x: -100,
+            verticalAlign: 'top',
+            y: 20,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
+        tooltip: {
+            formatter: function() {
+                return '<b>' + year + '-' + month + '-' + this.x + '</b><br/>' +
+                        this.series.name + ': ' + this.y + ' 吨<br/>' +
+                        '总计: ' + this.point.stackTotal + ' 吨';
+            }
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
+        series: series
+    });
 }
 
 /**

@@ -17,7 +17,7 @@
         <title><%=SystemUtil.serverDesc%> -- 甲醇月产量图表</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
-        <script type="text/javascript" src="<c:url value='/script/jscharts.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/script/highcharts.js' />"></script>
         <!--<script type="text/javascript" src="<c:url value='/script/busi/sc/dh/dh00061.js' />"></script>-->
         <!-- InstanceEndEditable -->
     </head>
@@ -61,9 +61,7 @@
             </table>
         </form>
         <hr />
-        <div align="center" style="width: 750px;height: 450px;margin: 20px auto;background-color: #F7F7F7">
-            <div id="graph">正在加载甲醇日产量图表...</div>
-        </div>
+        <div id="container" style="min-width: 700px; height: 450px; margin: 0 auto" align="center"></div>
         <!-- InstanceEndEditable -->
     </body>
     <!-- InstanceEnd --></html>

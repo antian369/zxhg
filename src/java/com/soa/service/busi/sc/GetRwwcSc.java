@@ -47,7 +47,7 @@ public class GetRwwcSc extends BaseService {
         }
         if (jhYec != null && !jhYec.isEmpty()) {
             if (StringUtil.notNull(jhYec.getStringValue("yzb"))) {
-                rw += jhYec.getDoubleValue("yzb") * 2.2;
+                rw += jhYec.getDoubleValue("yzb") / 2.2;
                 if(log.isDebugEnabled()){
                     log.debug("乙二醇月指标：" + jhYec.getDoubleValue("yzb"));
                 }
@@ -71,7 +71,7 @@ public class GetRwwcSc extends BaseService {
         }
         if (clYec != null && !clYec.isEmpty()) {
             if (StringUtil.notNull(clYec.getStringValue("sum_cl"))) {
-                wcl += clYec.getDoubleValue("sum_cl") * 2.2;
+                wcl += clYec.getDoubleValue("sum_cl") / 2.2;
                 if(log.isDebugEnabled()){
                     log.debug("乙二醇月产量：" + clYec.getDoubleValue("sum_cl"));
                 }

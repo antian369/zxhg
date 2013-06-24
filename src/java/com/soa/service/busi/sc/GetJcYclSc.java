@@ -97,7 +97,7 @@ public class GetJcYclSc extends BaseService {
             if (yecMap.get(tempDay) == null || yecMap.get(tempDay) == 0) {
                 yecz = 0.0;
             } else {
-                yecz = round(ccMap.get(tempDay) * 0.97);
+                yecz = round(yecMap.get(tempDay) / 2.2);
             }
             tempList.add(yecz.toString());
             result.add(tempList);

@@ -26,55 +26,19 @@
         <!-- InstanceBeginEditable name="content" -->
 
         <div style="margin: 10px auto 10px auto; text-align: center"><h2>三违确认</h2></div>
-        <form action="sw0003.do" method="post" id="search_form" name="search_form" class="sub_form" style="width: 80%;">
-            <table width="100%" border="0">
-                <tr>
-                    <td width="25%">
-                        状态：
-                        <select id="zt" name="zt">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${requestScope['aq_sw_info.zt']}" var="par">
-                                <option value="${par.colValue}">${par.valueDesc}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td width="25%">
-                        分类：
-                        <select id="swfl" name="swfl">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${requestScope['aq_sw_info.swfl']}" var="par">
-                                <option value="${par.colValue}">${par.valueDesc}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td width="25%">
-                        所属部门：
-                        <select id="ssdw" name="ssdw">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${deps.value}" var="dep">
-                                <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="submit" id="sub" value="查询" />
-                    </td>
-                </tr>
-            </table>
-        </form>
         <hr />
         <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
             <table cellpadding="0" cellspacing="0" border="0" class="display" id="sw_table">
                 <thead>
                     <tr>
-                        <th>三违时间</th>
+                        <th>三违发现时间</th>
                         <th>三违单位</th>
                         <th>三违人员</th>
                         <th>三违分类</th>
                         <th>状态</th>
                         <th>发现人</th>
-                        <th>发现时间</th>
                         <th>详细</th>
+                    </tr>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,7 +50,6 @@
                             <td align="center">${sw.swfl_desc.value}</td>
                             <td align="center">${sw.zt_desc.value}</td>
                             <td align="center">${sw.fxrxm.value}</td>
-                            <td align="center">${sw.fxsj.value}</td>
                             <td align="center">
                                 <a href="#this" class="info" ind="${xh.index}">查看</a>
                             </td>
@@ -136,7 +99,7 @@
                     <td id="sw_id"></td>
                 </tr>
                 <tr>
-                    <td width="30%" align="right">三违时间：</td>
+                    <td width="30%" align="right">三违发现时间：</td>
                     <td id="swsj"></td>
                 </tr>
                 <tr>
@@ -149,7 +112,7 @@
                 </tr>
                 <tr>
                     <td width="30%" align="right">三违现象：</td>
-                    <td id="swxx"></td>
+                    <td><textarea id="swxx" disabled="disabled" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td width="30%" align="right">三违分类：</td>
@@ -188,8 +151,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="30%" align="right">发现时间：</td>
-                    <td id="fxsj"></td>
+                    <td width="30%" align="right">核实：</td>
+                    <td id="hslx_desc"></td>
                 </tr>
                 <tr>
                     <td width="30%" align="right">录入人：</td>

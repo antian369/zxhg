@@ -30,27 +30,29 @@ public class QrSw extends BaseService {
     @Override
     @Transactional
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
+            AbstractCommonData out, AbstractCommonData outHead) {
         AbstractCommonData sw = queryData("get_sw", in.getStringValue("sw_id"));
-        if(!"02".equals(sw.getStringValue("zt"))){
+        if (!"02".equals(sw.getStringValue("zt"))) {
             throw new GlobalException(200013);        //登记的三违还未核实
         }
-        AbstractCommonData hsDep = queryData("get_dep_pl", sw.getStringValue("hsrbm"));    //核实人部门
-        AbstractCommonData ssdwDep = queryData("get_dep_pl", sw.getStringValue("ssdw"));    //三违所属部门
+
         AbstractCommonData session = getSession(in);
-        if ("3".equals(ssdwDep.getStringValue("dep_type"))) {       //非我公司的三违有财务部确认
-            if (!"财务部".equals(session.getStringValue("dep_name"))) {
-                throw new GlobalException(200012, "财务部");        //必须由 !#! 确认！
-            }
-        } else if ("安环部".equals(hsDep.getStringValue("dep_name"))) {      //1）安环部核实的由人力资源部确认
-            if (!"人力资源部".equals(session.getStringValue("dep_name"))) {
-                throw new GlobalException(200012, "人力资源部");        //必须由 !#! 确认！
-            }
-        } else if ("1".equals(hsDep.getStringValue("dep_type"))) {     //分厂核实的由分厂确认
-            if (!hsDep.getStringValue("dep_id").equals(session.getStringValue("dep_id"))) {
-                throw new GlobalException(200012, hsDep.getStringValue("dep_name"));        //必须由 !#! 确认！
-            }
+        if (session.getStringValue("dep_name").indexOf("财务") == -1) {
+            throw new GlobalException(200012, "财务部");        //必须由 !#! 确认！
         }
+//        if ("3".equals(ssdwDep.getStringValue("dep_type"))) {       //非我公司的三违有财务部确认
+//            if (!"财务部".equals(session.getStringValue("dep_name"))) {
+//                throw new GlobalException(200012, "财务部");        //必须由 !#! 确认！
+//            }
+//        } else if ("安环部".equals(hsDep.getStringValue("dep_name"))) {      //1）安环部核实的由人力资源部确认
+//            if (!"人力资源部".equals(session.getStringValue("dep_name"))) {
+//                throw new GlobalException(200012, "人力资源部");        //必须由 !#! 确认！
+//            }
+//        } else if ("1".equals(hsDep.getStringValue("dep_type"))) {     //分厂核实的由分厂确认
+//            if (!hsDep.getStringValue("dep_id").equals(session.getStringValue("dep_id"))) {
+//                throw new GlobalException(200012, hsDep.getStringValue("dep_name"));        //必须由 !#! 确认！
+//            }
+//        }
         Object[] args = new Object[5];
         args[0] = getLoginUser(in);
         args[1] = session.getStringValue("name");

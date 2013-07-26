@@ -422,10 +422,10 @@ public class DataConvertFactory {
                     structCommonDataJson((AbstractCommonData) obj, sb);    //装载数据包的递归函数
                 } else if (obj instanceof String) {
                     sb.append("'");
-                    sb.append(obj.toString().replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
                     sb.append("'");
                 } else {
-                    sb.append(obj.toString().replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
                 }
             }
             sb.append(']');
@@ -437,10 +437,10 @@ public class DataConvertFactory {
             structCommonDataJson((AbstractCommonData) data.getValue(), sb);       //装载数据包的递归函数
         } else if (CommonDataElement.STRING.equals(data.getType()) || CommonDataElement.OBJECT.equals(data.getType())) {
             sb.append("'");
-            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
             sb.append("'");
         } else {
-            sb.append(data.getValue().toString().replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue().toString().replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r"));
         }
     }
 
@@ -763,10 +763,10 @@ public class DataConvertFactory {
                     structCommonDataSBJson((AbstractCommonData) obj, sb);    //装载数据包的递归函数
                 } else if (obj instanceof String) {
                     sb.append("\"");
-                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
                     sb.append("\"");
                 } else {
-                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
                 }
             }
             sb.append(']');
@@ -778,10 +778,10 @@ public class DataConvertFactory {
             structCommonDataSBJson((AbstractCommonData) data.getValue(), sb);       //装载数据包的递归函数
         } else if (CommonDataElement.STRING.equals(data.getType()) || CommonDataElement.OBJECT.equals(data.getType())) {
             sb.append("\"");
-            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
             sb.append("\"");
         } else {
-            sb.append(data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue().toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
         }
     }
 
@@ -842,10 +842,10 @@ public class DataConvertFactory {
                     structCommonDataNormJson((AbstractCommonData) obj, sb);    //装载数据包的递归函数
                 } else if (obj instanceof String) {
                     sb.append("\"");
-                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
                     sb.append("\"");
                 } else {
-                    sb.append(obj.toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+                    sb.append(obj.toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
                 }
             }
             sb.append(']');
@@ -857,10 +857,10 @@ public class DataConvertFactory {
             structCommonDataNormJson((AbstractCommonData) data.getValue(), sb);       //装载数据包的递归函数
         } else if (CommonDataElement.STRING.equals(data.getType()) || CommonDataElement.OBJECT.equals(data.getType())) {
             sb.append("\"");
-            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue() == null ? "" : data.getValue().toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
             sb.append("\"");
         } else {
-            sb.append(data.getValue().toString().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
+            sb.append(data.getValue().toString().replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r"));
         }
     }
 }

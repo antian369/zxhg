@@ -29,7 +29,7 @@ public class InputSw extends BaseService {
                                                      //"fxr", "发现人ID",
                                                      "fxrxm", "发现人姓名",
 //                                                     "fxrbm", "发现人部门",
-                                                     "fxsj", "发现时间"};
+                                                     "hslx", "三违核实"};
 
     @Override
     public String[] keys() {
@@ -53,7 +53,7 @@ public class InputSw extends BaseService {
         args[8] = in.getStringValue("fxr");
         args[9] = in.getStringValue("fxrxm");
         args[10] = in.getStringValue("fxrbm");
-        args[11] = in.getStringValue("fxsj");
+        args[11] = in.getStringValue("hslx");
         args[12] = getLoginUser(in);
         args[13] = session.getStringValue("dep_id");
         update("input_sw", args);       //插入

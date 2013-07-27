@@ -5,23 +5,20 @@
 package com.soa.service.busi.aq.sw;
 
 import com.lianzt.commondata.AbstractCommonData;
-import com.lianzt.commondata.DataConvertFactory;
 import com.soa.service.BaseService;
+import static com.soa.service.BaseService.runService;
 import com.soa.util.SystemUtil;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * 获取一页三违信息
- * S12001
- * @author Asus
+ * 获取可修改的三违数据
+ * S12018
+ * 说明：只能修改未核实的三违
+ * @author lianzt
  */
 @Service
-public class GetPageSw extends BaseService {
-
-    private static final String[] KEY = new String[]{"zt", "三违状态",
-                                                     "swfl", "三违分类",
-                                                     "ssdw", "三违单位"};
+public class GetXgSw extends BaseService {
 
     @Override
     public String[] keys() {
@@ -29,17 +26,13 @@ public class GetPageSw extends BaseService {
     }
 
     @Override
-    public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
-        Object[] args = new Object[3];
-        args[0] = in.getStringValue("zt");
-        args[1] = in.getStringValue("swfl");
-        args[2] = in.getStringValue("ssdw");
-        in.putStringValue("sql", "get_page_sw");
-        in.putObjectValue("args", args);
+    public void execute(AbstractCommonData in, AbstractCommonData inHead, AbstractCommonData out, AbstractCommonData outHead) {
+        //select * from aq_sw_info where lrr=? and zt='01'
+        in.putStringValue("sql", "get_xg_sw");
+        in.putObjectValue("args", new Object[]{getLoginUser(in)});
         AbstractCommonData page = runService(in, "S10001");     //分页查询
         List<AbstractCommonData> list = page.getArrayValue("result");
-        for(AbstractCommonData sw : list){
+        for (AbstractCommonData sw : list) {
             sw.putStringValue("swfl_desc", SystemUtil.getColValueDesc("aq_sw_info.swfl", sw.getStringValue("swfl")));
             sw.putStringValue("zt_desc", SystemUtil.getColValueDesc("aq_sw_info.zt", sw.getStringValue("zt")));
             sw.putStringValue("hslx_desc", SystemUtil.getColValueDesc("aq_sw_info.hslx", sw.getStringValue("hslx")));

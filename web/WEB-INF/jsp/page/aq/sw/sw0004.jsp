@@ -25,68 +25,30 @@
     <body>
         <!-- InstanceBeginEditable name="content" -->
         <div style="margin: 10px auto 10px auto; text-align: center"><h2>三违修改</h2></div>
-        <form method="post" id="search_form" name="search_form" class="sub_form" style="width: 80%;">
-            <table width="100%" border="0">
-                <tr>
-                    <td width="25%">
-                        状态：
-                        <select id="zt" name="zt">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${requestScope['aq_sw_info.zt']}" var="par">
-                                <option value="${par.colValue}">${par.valueDesc}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td width="25%">
-                        分类：
-                        <select id="swfl" name="swfl">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${requestScope['aq_sw_info.swfl']}" var="par">
-                                <option value="${par.colValue}">${par.valueDesc}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td width="25%">
-                        所属部门：
-                        <select id="ssdw" name="ssdw">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${deps.value}" var="dep">
-                                <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="submit" id="sub" value="查询" />
-                        <input type="button" id="swdj" value="登记三违" />
-                    </td>
-                </tr>
-            </table>
-        </form>
         <hr />
         <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
             <table cellpadding="0" cellspacing="0" border="0" class="display" id="sw_table">
                 <thead>
                     <tr>
-                        <th>三违时间</th>
+                        <th>三违发现时间</th>
                         <th>三违单位</th>
                         <th>三违人员</th>
                         <th>三违分类</th>
                         <th>状态</th>
                         <th>发现人</th>
-                        <th>发现时间</th>
                         <th>详细</th>
+                    </tr>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${result.value}" var="sw" varStatus="xh">
                         <tr>
-                            <td align="center">${sw.swsj.value}</td>
+                            <td align="center">${sw.swsj.value.detaled}</td>
                             <td align="center" select="${sw.ssdw.value}" class="table_view_select" target_select="#ssdw"></td>
                             <td align="center">${sw.swry.value}</td>
                             <td align="center">${sw.swfl_desc.value}</td>
                             <td align="center">${sw.zt_desc.value}</td>
                             <td align="center">${sw.fxrxm.value}</td>
-                            <td align="center">${sw.fxsj.value}</td>
                             <td align="center">
                                 <a href="#this" class="info" ind="${xh.index}">查看</a>
                             </td>
@@ -116,102 +78,10 @@
             <form method="post" id="page_form" name="page_form">
                 <%-- 翻页参数，还需要使用js对id=page的项进行赋值 --%>
                 <input type="hidden" id="page" name="page" value="${param.page}"/>
-                <input type="hidden" name="swfl" value="${param.swfl}" />
-                <input type="hidden" name="zt" value="${param.zt}" />
-                <input type="hidden" name="ssdw" value="${param.ssdw}" />
             </form>
             <%-- 页码生成 end --%>
         </div>
 
-        <%-- 登记三违 --%>
-        <div id="swdj_dialog" title="三违登记">
-            <form id="swdj_form">
-                <table class="table_input" width="100%">
-                    <tr>
-                        <td width="40%" align="right">三违时间：</td>
-                        <td>
-                            <input type="text" id="swsj" name="swsj" fn="notNull('三违时间','#swdj_form #swsj')" data-role="date"/>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违地点：</td>
-                        <td>
-                            <input type="text" id="swdd" name="swdd" fn="notNull('三违地点','#swdj_form #swdd')" size="40" />
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违人员：</td>
-                        <td>
-                            <input type="text" id="swry" name="swry" fn="notNull('三违人员','#swdj_form #swry')" />
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违现象：</td>
-                        <td>
-                            <textarea id="swxx" name="swxx" fn="notNull('三违现象','#swdj_form #swxx')" cols="30" rows="5"></textarea>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违分类：</td>
-                        <td>
-                            <select id="swfl" name="swfl">
-                                <c:forEach items="${requestScope['aq_sw_info.swfl']}" var="par">
-                                    <option value="${par.colValue}">${par.valueDesc}</option>
-                                </c:forEach>
-                            </select>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违单位：</td>
-                        <td>
-                            <select id="ssdw" name="ssdw">
-                                <c:forEach items="${deps.value}" var="dep">
-                                    <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                                </c:forEach>
-                            </select>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">三违备注：</td>
-                        <td><input type="text" id="swbz" name="swbz" size="40" /></td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">发现人姓名：</td>
-                        <td>
-                            <input type="text" id="fxrxm" name="fxrxm" value="${sessionScope.ses.name.value}" fn="notNull('发现人姓名', '#swdj_form #fxrxm')" />
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">发现人所在部门：</td>
-                        <td>
-                            <select id="fxrbm" name="fxrbm">
-                                <option value="${sessionScope.ses.dep_id.value}" selected="selected">${sessionScope.ses.dep_name.value}</option>
-                                <option value="">其它</option>
-                                <c:forEach items="${deps.value}" var="dep">
-                                    <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                                </c:forEach>
-                            </select>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">发现时间：</td>
-                        <td>
-                            <input type="text" id="fxsj" name="fxsj" fn="notNull('发现时间', '#swdj_form #fxsj')" data-role="date" />
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                </table>
-                <input type="hidden" id="fxr" name="fxr" value="${sessionScope.ses.username.value}" />
-            </form>
-        </div>
         <%-- 查看三违 --%>
         <div id="cksw_dialog" title="查看三违">
             <br />
@@ -238,7 +108,7 @@
                 </tr>
                 <tr>
                     <td width="30%" align="right">三违现象：</td>
-                    <td id="swxx"></td>
+                    <td><textarea id="swxx" disabled="disabled" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td width="30%" align="right">三违分类：</td>
@@ -277,8 +147,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="30%" align="right">发现时间：</td>
-                    <td id="fxsj"></td>
+                    <td width="30%" align="right">核实：</td>
+                    <td id="hslx_desc"></td>
                 </tr>
                 <tr>
                     <td width="30%" align="right">录入人：</td>
@@ -382,9 +252,11 @@
                 <input type="hidden" id="sw_id" name="sw_id" />
                 <table class="table_input" width="100%">
                     <tr>
-                        <td width="40%" align="right">三违时间：</td>
+                        <td width="40%" align="right">三违发现时间：</td>
                         <td>
-                            <input type="text" id="swsj_1" name="swsj" fn="notNull('三违时间','#xgsw_form #swsj_1')" data-role="date"/>
+                            <input type="text" id="swsj" name="swsj" fn="notNull('三违时间','#xgsw_dialog #swsj')" style="width: 100px" data-role="date"/>
+                            <input type="text" id='swsj_h' name="swsj_h" fn="isNum('三违时间(小时)', '#xgsw_dialog #swsj_h')" maxlength="2" style="width: 20px" />时
+                            <input type="text" id='swsj_m' name="swsj_m" fn="isNum('三违时间(分钟)', '#xgsw_dialog #swsj_m')" maxlength="2" style="width: 20px" />分
                             <span style="color: red">*</span>
                         </td>
                     </tr>
@@ -432,6 +304,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td width="40%" align="right">三违核实：</td>
+                        <td>
+                            <select id="hslx" name="hslx">
+                                <c:forEach items="${requestScope['aq_sw_info.hslx']}" var="par">
+                                    <option value="${par.colValue}">${par.valueDesc}</option>
+                                </c:forEach>
+                            </select>
+                            <span style="color: red">*</span>
+                        </td>
+                    </tr>
+                    <tr>
                         <td width="40%" align="right">三违备注：</td>
                         <td><input type="text" id="swbz" name="swbz" size="40" /></td>
                     </tr>
@@ -451,13 +334,6 @@
                                     <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
                                 </c:forEach>
                             </select>
-                            <span style="color: red">*</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right">发现时间：</td>
-                        <td>
-                            <input type="text" id="fxsj_1" name="fxsj" fn="notNull('发现时间', '#xgsw_form #fxsj_1')" data-role="date" />
                             <span style="color: red">*</span>
                         </td>
                     </tr>

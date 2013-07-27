@@ -44,7 +44,7 @@
                 <tbody>
                     <c:forEach items="${result.value}" var="sw" varStatus="xh">
                         <tr>
-                            <td align="center">${sw.swsj.value}</td>
+                            <td align="center">${sw.swsj.value.detaled}</td>
                             <td align="center" select="${sw.ssdw.value}" class="table_view_select" target_select="#ssdw"></td>
                             <td align="center">${sw.swry.value}</td>
                             <td align="center">${sw.swfl_desc.value}</td>
@@ -79,9 +79,6 @@
             <form action="sw0003.do" method="post" id="page_form" name="page_form">
                 <%-- 翻页参数，还需要使用js对id=page的项进行赋值 --%>
                 <input type="hidden" id="page" name="page" value="${param.page}"/>
-                <input type="hidden" name="swfl" value="${param.swfl}" />
-                <input type="hidden" name="zt" value="${param.zt}" />
-                <input type="hidden" name="ssdw" value="${param.ssdw}" />
             </form>
             <%-- 页码生成 end --%>
         </div>

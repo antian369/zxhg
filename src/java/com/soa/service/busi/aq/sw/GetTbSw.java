@@ -5,23 +5,20 @@
 package com.soa.service.busi.aq.sw;
 
 import com.lianzt.commondata.AbstractCommonData;
-import com.lianzt.commondata.DataConvertFactory;
 import com.soa.service.BaseService;
+import static com.soa.service.BaseService.runService;
 import com.soa.util.SystemUtil;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * 获取一页三违信息
- * S12001
- * @author Asus
+ * 获取通报的三违
+ * S12019
+ * 说明：可选参数，三违单位、三违分类
+ * @author lianzt
  */
 @Service
-public class GetPageSw extends BaseService {
-
-    private static final String[] KEY = new String[]{"zt", "三违状态",
-                                                     "swfl", "三违分类",
-                                                     "ssdw", "三违单位"};
+public class GetTbSw extends BaseService{
 
     @Override
     public String[] keys() {
@@ -29,13 +26,11 @@ public class GetPageSw extends BaseService {
     }
 
     @Override
-    public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
-        Object[] args = new Object[3];
-        args[0] = in.getStringValue("zt");
-        args[1] = in.getStringValue("swfl");
-        args[2] = in.getStringValue("ssdw");
-        in.putStringValue("sql", "get_page_sw");
+    public void execute(AbstractCommonData in, AbstractCommonData inHead, AbstractCommonData out, AbstractCommonData outHead) {
+        Object[] args = new Object[2];
+        args[0] = in.getStringValue("swfl");
+        args[1] = in.getStringValue("ssdw");
+        in.putStringValue("sql", "get_tb_sw");
         in.putObjectValue("args", args);
         AbstractCommonData page = runService(in, "S10001");     //分页查询
         List<AbstractCommonData> list = page.getArrayValue("result");
@@ -46,4 +41,5 @@ public class GetPageSw extends BaseService {
         }
         out.putAll(page);
     }
+
 }

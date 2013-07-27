@@ -13,7 +13,7 @@ $(".info").click(function(){
     ind = $(this).attr("ind");
     var json = outJson["result"][$(this).attr("ind")];
     padBackData(json, "#cksw_dialog");
-    padBackData(json, "#hssw_form");
+    padBackData(json, "#rqsw_form");
     $("#cksw_dialog").dialog("open");
 });
 $("#cksw_dialog").dialog({

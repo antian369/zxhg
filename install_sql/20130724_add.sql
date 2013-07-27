@@ -9,3 +9,7 @@ insert into st_table_paramet value ('aq_sw_info','hslx','2','核实类型','公�
 
 insert into st_service_bean value ('S12016','getHsSw','获取需要核实的三违','Y','sw');
 insert into st_service_bean value ('S12017','getQrSw','获取待确认的三违','Y','sw');
+
+insert into st_service_bean value ('S12018','getXgSw','获取可修改的三违数据','Y','sw');
+insert into st_service_bean value ('S12019','getTbSw','获取通报的三违','Y','sw');
+insert into st_service_bean value ('P12018','delSw','删除三违','Y','sw');

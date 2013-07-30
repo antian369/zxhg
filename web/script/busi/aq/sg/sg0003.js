@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 
-$("#sg_table").dataTable(tableTheme);
+var tableOrder = $.extend(true, {}, tableTheme, {aaSorting: [[2, 'desc']]});
+$("#sg_table").dataTable(tableOrder);
 var ind;        //查看的第几行
 /**
  * 详细信息按键及弹窗

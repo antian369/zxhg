@@ -5,6 +5,7 @@
 package com.soa.service.busi.aq.sg;
 
 import com.lianzt.commondata.AbstractCommonData;
+import com.lianzt.util.StringUtil;
 import com.soa.service.BaseService;
 import com.soa.util.SystemUtil;
 import java.util.List;
@@ -25,10 +26,10 @@ public class SearchSg extends BaseService {
 
     @Override
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
+            AbstractCommonData out, AbstractCommonData outHead) {
         Object[] args = new Object[5];
         args[0] = in.getStringValue("zt");
-        args[1] = in.getStringValue("sgdw");
+        args[1] = StringUtil.changeNull(in.getStringValue("sgdw"));
         args[2] = in.getStringValue("sglb");
         args[3] = in.getStringValue("sgjb");
         args[4] = in.getStringValue("sgxz");

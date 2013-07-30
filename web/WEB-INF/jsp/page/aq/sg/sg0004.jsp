@@ -14,7 +14,7 @@
         <script type="text/javascript" src="<c:url value='/script/jquery-ui-1.8.21.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/script/jquery.dataTables.js' />"></script>
         <!-- InstanceBeginEditable name="doctitle" -->
-        <title><%=SystemUtil.serverDesc%> -- 事故通报</title>
+        <title><%=SystemUtil.serverDesc%> -- 通报事故</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
         <script type="text/javascript">
@@ -24,7 +24,7 @@
     </head>
     <body>
         <!-- InstanceBeginEditable name="content" -->
-        <div style="margin: 10px auto 10px auto; text-align: center"><h2>事故通报</h2></div>
+        <div style="margin: 10px auto 10px auto; text-align: center"><h2>通报事故</h2></div>
         <hr />
         <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
             <table cellpadding="0" cellspacing="0" border="0" class="display" id="sg_table">
@@ -36,8 +36,8 @@
                         <th>事故级别</th>
                         <th>事故类别</th>
                         <th>直接损失(万元)</th>
-                        <th>事故状态</th>
-                        <th>查看</th>
+                        <th>间接损失(万元)</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,9 +50,9 @@
                             <td align="center">${sg.sgjb_desc.value}</td>
                             <td align="center">${sg.sglb_desc.value}</td>
                             <td align="center">${sg.zjss.value}</td>
-                            <td align="center">${sg.zt_desc.value}</td>
+                            <td align="center">${sg.jjss.value}</td>
                             <td align="center">
-                                <a href="#this" class="info" ind="${xh.index}">详细</a>
+                                <a href="#this" class="info" ind="${xh.index}">通报</a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -77,7 +77,7 @@
             <a href="#this" page="${page_count.value}" class="page_num">末页</a>
             &nbsp;&nbsp;&nbsp;
             共 <span style="color: red">${page_count.value}</span> 页， <span style="color: red">${count.value}</span> 条
-            <form action="sg0002.do" method="post" id="page_form" name="page_form">
+            <form method="post" id="page_form" name="page_form">
                 <%-- 翻页参数，还需要使用js对id=page的项进行赋值 --%>
                 <input type="hidden" id="page" name="page" value="${param.page}"/>
                 <input type="hidden" name="sgdw" value="${param.sgdw}" />
@@ -92,10 +92,6 @@
         <div id="cksg_dialog" title="事故详细信息">
             <br />
             <table class="table_input" width="90%">
-                <tr>
-                    <td width="30%" align="right" style="background-color: #319ACF; color: white;">事故简报：</td>
-                    <td></td>
-                </tr>
                 <tr>
                     <td align="right" width="40%">事故单位：</td>
                     <td id="sgdw"></td>
@@ -130,7 +126,7 @@
                 </tr>
                 <tr>
                     <td align="right">事故概要：</td>
-                    <td><textarea id="zywhp" disabled="disabled" cols="30" rows="5"></textarea></td>
+                    <td id="zywhp"></td>
                 </tr>
                 <tr>
                     <td align="right">死亡人数：</td>
@@ -157,54 +153,55 @@
                     <td id="szrs"></td>
                 </tr>
                 <tr>
-                    <td align="right">事故状态：</td>
-                    <td id="zt_desc"></td>
-                </tr>
-                <tr>
-                    <td align="right">事故录入人：</td>
-                    <td id="lrr"></td>
-                </tr>
-                <tr>
-                    <td align="right">事故录入时间：</td>
-                    <td id="lrsj"></td>
-                </tr>
-                <tr>
                     <td align="right">事故备注：</td>
                     <td id="sgbz"></td>
                 </tr>
-                <tr>
-                    <td width="30%" align="right" style="background-color: #319ACF; color: white;">事故通报：</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td align="right">事故处理：</td>
-                    <td><textarea id="sgcl" disabled="disabled" cols="30" rows="5"></textarea></td>
-                </tr>
-                <tr>
-                    <td align="right">整改措施：</td>
-                    <td><textarea id="zgcs" disabled="disabled" cols="30" rows="5"></textarea></td>
-                </tr>
-                <tr>
-                    <td align="right">调查组成员：</td>
-                    <td id="dczcy"></td>
-                </tr>
-                <tr>
-                    <td align="right">填表单位负责人：</td>
-                    <td id="tbfzr"></td>
-                </tr>
-                <tr>
-                    <td align="right">通报人：</td>
-                    <td id="sgtbr"></td>
-                </tr>
-                <tr>
-                    <td align="right">通报时间：</td>
-                    <td id="tbsj"></td>
-                </tr>
-                <tr>
-                    <td align="right">通报备注：</td>
-                    <td id="tbbz"></td>
-                </tr>
             </table>
+        </div>
+        <%-- 弹出页 事故详细 end --%>
+
+        <%-- 弹出页 通报事故 begin --%>
+        <div id="tbsg_dialog" title="通报事故">
+            <br />
+            <form id="tbsg_form">
+                <input type="hidden" id="sg_id" name="sg_id" />
+                <table class="table_input" width="90%">
+                    <tr>
+                        <td align="right">事故处理：</td>
+                        <td>
+                            <textarea id="sgcl" name="sgcl" fn="notNull('事故处理', '#tbsg_form #sgcl')" rows="5" cols="40"></textarea>
+                            <span style="color: red">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">整改措施：</td>
+                        <td>
+                            <textarea id="zgcs" name="zgcs" fn="notNull('整改措施', '#tbsg_form #zgcs')" rows="5" cols="40"></textarea>
+                            <span style="color: red">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">调查组成员：</td>
+                        <td>
+                            <textarea id="dczcy" name="dczcy" fn="notNull('调查组成员', '#tbsg_form #dczcy')" rows="5" cols="40"></textarea>
+                            <span style="color: red">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">填表单位负责人：</td>
+                        <td>
+                            <input type="text" id="tbfzr" name="tbfzr" fn="notNull('填表单位负责人', '#tbsg_form #tbfzr')" />
+                            <span style="color: red">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">备注：</td>
+                        <td>
+                            <input type="text" id="tbbz" name="tbbz" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
         <%-- 弹出页 通报事故 end --%>
         <!-- InstanceEndEditable -->

@@ -31,12 +31,7 @@
                 <tr>
                     <td width="35%">
                         事故单位：
-                        <select id="sgdw" name="sgdw">
-                            <option value="" checked>全部</option>
-                            <c:forEach items="${deps.value}" var="dep">
-                                <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                            </c:forEach>
-                        </select>
+                        <input type="text" id="sgdw" name="sgdw"/>
                     </td>
                     <td width="35%">
                         事故性质：
@@ -100,7 +95,8 @@
                 <tbody>
                     <c:forEach items="${result.value}" var="sg" varStatus="xh">
                         <tr>
-                            <td align="center" select="${sg.sgdw.value}" class="table_view_select" target_select="#sgdw"></td>
+                            <!--<td align="center" select="${sg.sgdw.value}" class="table_view_select" target_select="#sgdw"></td>-->
+                            <td align="center">${sg.sgdw.value}</td>
                             <td align="center">${sg.sgdd.value}</td>
                             <td align="center">${sg.sgsj.value}</td>
                             <td align="center">${sg.sgjb_desc.value}</td>
@@ -155,13 +151,7 @@
                 </tr>
                 <tr>
                     <td align="right" width="40%">事故单位：</td>
-                    <td>
-                        <select id="sgdw" name="sgdw" disabled="disabled">
-                            <c:forEach items="${deps.value}" var="dep">
-                                <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
+                    <td id="sgdw"></td>
                 </tr>
                 <tr>
                     <td align="right">事故发生地点：</td>
@@ -192,8 +182,8 @@
                     <td id="jjss"></td>
                 </tr>
                 <tr>
-                    <td align="right">主要危化品：</td>
-                    <td id="zywhp"></td>
+                    <td align="right">事故概要：</td>
+                    <td><textarea id="zywhp" disabled="disabled" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td align="right">死亡人数：</td>
@@ -241,11 +231,11 @@
                 </tr>
                 <tr>
                     <td align="right">事故处理：</td>
-                    <td id="sgcl"></td>
+                    <td><textarea id="sgcl" disabled="disabled" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td align="right">整改措施：</td>
-                    <td id="zgcs"></td>
+                    <td><textarea id="zgcs" disabled="disabled" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td align="right">调查组成员：</td>

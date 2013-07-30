@@ -22,16 +22,19 @@
     <body>
         <!-- InstanceBeginEditable name="content" -->
         <div style="margin: 10px auto 10px auto; text-align: center"><h2>事故登记</h2></div>
-        <form id="data_form" name="data_form" class="sub_form" style="width: 60%;">
-            <table width="100%" border="0" class="table_input">
+        <form id="data_form" name="data_form" class="sub_form" style="width: 70%;">
+            <table width="100%" border="0" class="tablelist">
                 <tr>
                     <td align="right" width="40%">事故单位：</td>
                     <td>
+                        <%--
                         <select id="sgdw" name="sgdw">
                             <c:forEach items="${deps.value}" var="dep">
                                 <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
                             </c:forEach>
                         </select>
+                        --%>
+                        <input type="text" id="sgdw" name="sgdw" fn="notNull('事故单位', '#data_form #sgdw')"/>
                         <span style="color: red">*</span>
                     </td>
                 </tr>
@@ -97,9 +100,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="right">主要危化品：</td>
+                    <td align="right">事故概要：</td>
                     <td>
-                        <textarea id="zywhp" name="zywhp" fn="notNull('主要危化品','#data_form #zywhp')" cols="30" rows="5"></textarea>
+                        <textarea id="zywhp" name="zywhp" fn="notNull('事故概要','#data_form #zywhp')" cols="30" rows="5"></textarea>
                         <span style="color: red">*</span>
                     </td>
                 </tr>
@@ -149,7 +152,6 @@
                     <td align="right">备注：</td>
                     <td><input type="text" id="sgbz" name="sgbz" /></td>
                 </tr>
-                <tr><td colspan="2"><hr /></td></tr>
                 <tr>
                     <td align="center" colspan="2">
                         <input type="button" id="sub" value="保存" />

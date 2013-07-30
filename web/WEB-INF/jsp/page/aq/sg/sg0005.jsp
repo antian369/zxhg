@@ -14,7 +14,7 @@
         <script type="text/javascript" src="<c:url value='/script/jquery-ui-1.8.21.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/script/jquery.dataTables.js' />"></script>
         <!-- InstanceBeginEditable name="doctitle" -->
-        <title><%=SystemUtil.serverDesc%> -- 事故通报</title>
+        <title><%=SystemUtil.serverDesc%> -- 事故删除</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
         <script type="text/javascript">
@@ -24,7 +24,59 @@
     </head>
     <body>
         <!-- InstanceBeginEditable name="content" -->
-        <div style="margin: 10px auto 10px auto; text-align: center"><h2>事故通报</h2></div>
+
+        <div style="margin: 10px auto 10px auto; text-align: center"><h2>事故删除</h2></div>
+        <form method="post" id="search_form" name="search_form" class="sub_form" style="width: 80%;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="35%">
+                        事故单位：
+                        <input type="text" id="sgdw" name="sgdw"/>
+                    </td>
+                    <td width="35%">
+                        事故性质：
+                        <select id="sgxz" name="sgxz">
+                            <option value="" checked>全部</option>
+                            <c:forEach items="${requestScope['aq_sg_info.sgxz']}" var="par">
+                                <option value="${par.colValue}">${par.valueDesc}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td>
+                        事故状态：
+                        <select id="zt" name="zt">
+                            <option value="" checked>全部</option>
+                            <c:forEach items="${requestScope['aq_sg_info.zt']}" var="par">
+                                <option value="${par.colValue}">${par.valueDesc}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                <tr>
+                </tr>
+                <td>
+                    事故类别：
+                    <select id="sglb" name="sglb">
+                        <option value="" checked>全部</option>
+                        <c:forEach items="${requestScope['aq_sg_info.sglb']}" var="par">
+                            <option value="${par.colValue}">${par.valueDesc}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+                <td>
+                    事故级别：
+                    <select id="sgjb" name="sgjb">
+                        <option value="" checked>全部</option>
+                        <c:forEach items="${requestScope['aq_sg_info.sgjb']}" var="par">
+                            <option value="${par.colValue}">${par.valueDesc}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+                <td>
+                    <input type="submit" id="sub" value="查询" />
+                </td>
+                </tr>
+            </table>
+        </form>
         <hr />
         <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
             <table cellpadding="0" cellspacing="0" border="0" class="display" id="sg_table">
@@ -52,7 +104,7 @@
                             <td align="center">${sg.zjss.value}</td>
                             <td align="center">${sg.zt_desc.value}</td>
                             <td align="center">
-                                <a href="#this" class="info" ind="${xh.index}">详细</a>
+                                <a href="#this" class="info" ind="${xh.index}" id="${sg.sg_id.value}">详细</a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -77,13 +129,14 @@
             <a href="#this" page="${page_count.value}" class="page_num">末页</a>
             &nbsp;&nbsp;&nbsp;
             共 <span style="color: red">${page_count.value}</span> 页， <span style="color: red">${count.value}</span> 条
-            <form action="sg0002.do" method="post" id="page_form" name="page_form">
+            <form method="post" id="page_form" name="page_form">
                 <%-- 翻页参数，还需要使用js对id=page的项进行赋值 --%>
                 <input type="hidden" id="page" name="page" value="${param.page}"/>
                 <input type="hidden" name="sgdw" value="${param.sgdw}" />
                 <input type="hidden" name="sgjb" value="${param.sgjb}" />
                 <input type="hidden" name="sgxz" value="${param.sgxz}" />
                 <input type="hidden" name="sglb" value="${param.sglb}" />
+                <input type="hidden" name="zt" value="${param.zt}" />
             </form>
             <%-- 页码生成 end --%>
         </div>
@@ -91,6 +144,7 @@
         <%-- 弹出页 事故详细 begin --%>
         <div id="cksg_dialog" title="事故详细信息">
             <br />
+            <input type="hidden" id="sg_id" />
             <table class="table_input" width="90%">
                 <tr>
                     <td width="30%" align="right" style="background-color: #319ACF; color: white;">事故简报：</td>
@@ -206,7 +260,7 @@
                 </tr>
             </table>
         </div>
-        <%-- 弹出页 通报事故 end --%>
+        <%-- 弹出页 事故详细 end --%>
         <!-- InstanceEndEditable -->
     </body>
     <!-- InstanceEnd --></html>

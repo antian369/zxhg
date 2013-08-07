@@ -21,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class InputYhjcYh extends BaseService{
 
-    private static final String[] KEY = new String[]{"jcrxm", "检查人姓名",
-                                                     "jclx", "检查类型",
+    private static final String[] KEY = new String[]{"ly", "检查类型",
                                                      "jcsj", "检查时间",
                                                      "yhmc", "隐患名称",
                                                      "yhlb", "隐患类别",
@@ -30,8 +29,7 @@ public class InputYhjcYh extends BaseService{
                                                      "yhjb", "隐患级别",
                                                      "yhdw", "隐患单位",
                                                      "yhdd", "隐患地点",
-                                                     "pzsx", "批准完成时限",
-                                                     "pzsx_h", "批准完成时限(时)"};
+                                                     "pzsx", "批准完成时限"};
     @Override
     public String[] keys() {
         return KEY;
@@ -42,17 +40,9 @@ public class InputYhjcYh extends BaseService{
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
                         AbstractCommonData out, AbstractCommonData outHead) {
         String yhId = SystemUtil.getSerialNum();
-        Date pzsx = in.getDateValue("pzsx");
-        pzsx = DateUtil.setHour(pzsx, in.getIntValue("pzsx_h"));        //设置时限的小时数
         AbstractCommonData session = getSession(in);
-        Object[] yhjcArgs = new Object[6];      //隐患整改参数: yh_id,jcdw,jclx,jcsj,jcr,jcrxm
-        yhjcArgs[0] = yhId;
-        yhjcArgs[1] = session.getStringValue("dep_id");
-        yhjcArgs[2] = in.getStringValue("jclx");
-        yhjcArgs[3] = in.getDateValue("jcsj");
-        yhjcArgs[4] = in.getStringValue("jcr");
-        yhjcArgs[5] = in.getStringValue("jcrxm");
-        Object[] yhArgs = new Object[9];        //隐患参数：aq_yh_info (yh_id,yhmc,yhlb,yhms,yhjb,yhdw,yhdd,lrr,lrsj,zt,ly) value (?,?,?,?,?,?,?,?,now(),'1',?)
+        //insert into aq_yh_info (yh_id,yhmc,yhlb,yhms,yhjb,yhdw,yhdd,jcsj,lrr,lrsj,zt,ly) value (?,?,?,?,?,?,?,?,?,now(),'1',?)
+        Object[] yhArgs = new Object[10];
         yhArgs[0] = yhId;
         yhArgs[1] = in.getStringValue("yhmc");
         yhArgs[2] = in.getStringValue("yhlb");
@@ -60,18 +50,20 @@ public class InputYhjcYh extends BaseService{
         yhArgs[4] = in.getStringValue("yhjb");
         yhArgs[5] = in.getStringValue("yhdw");
         yhArgs[6] = in.getStringValue("yhdd");
-        yhArgs[7] = getLoginUser(in);
-        yhArgs[8] = "3";        //来源，安全检查
-        String zgId = SystemUtil.getSerialNum();
-        Object[] zgArgs = new Object[3];        //整改参数：yh_id,zg_id,pzsj
-        zgArgs[0] = yhId;
-        zgArgs[1] = zgId;
-        zgArgs[2] = pzsx;
+        yhArgs[7] = in.getDateValue("jcsj");
+        yhArgs[8] = getLoginUser(in);
+        yhArgs[9] = in.getStringValue("ly");
+
+        //insert into aq_yh_zg (zg_id,yh_id,pzsx,lazy_zt,yszt) value (?,?,?,'1','1')
+        Object[] zgArgs = new Object[3];
+        zgArgs[0] = SystemUtil.getSerialNum();
+        zgArgs[1] = yhId;
+        zgArgs[2] = in.getDateValue("pzsx");
+
         //先插入隐患
         update("save_yh", yhArgs);
-        //后两个随意插入
-        update("save_yhjc_yh", yhjcArgs);       //自述旬报 保存
-        update("save_yhsg_zgjl_yh", zgArgs);
+        //再插入整改
+        update("save_zg", zgArgs);
     }
 
 }

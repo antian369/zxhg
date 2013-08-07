@@ -8,6 +8,7 @@ import com.lianzt.commondata.AbstractCommonData;
 import com.lianzt.util.DateUtil;
 import com.lianzt.util.StringUtil;
 import com.soa.service.BaseService;
+import com.soa.util.SystemUtil;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 定时修改隐患状态
  * P12013
+ * 说明：把隐患状态修改为 4逾期未整改，再把整改记录修改为 3验收不通过 3超时，然后再新增一条整改记录
  * @author Asus
  */
 @Service
@@ -33,8 +35,9 @@ public class ExpiredZgYh extends BaseService {
     @Override
     @Transactional
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
-        //select yh_id, zg_id, sqsx, pzsx from aq_yh_zgjl where zgjg is null and fcsj is not null
+            AbstractCommonData out, AbstractCommonData outHead) {
+        //查询，隐患状态为 1正在整改， 验收状态为 1正在整改， 延时状态为 1未超时 的项
+        //select yh_id, zg_id, pzsx from aq_yh_zg_v where zg='1' and lazy_zt='1' and yszt='1'
         List<AbstractCommonData> list = queryList("get_judg_zg");
         if (list == null || list.isEmpty()) {
             return;
@@ -49,33 +52,30 @@ public class ExpiredZgYh extends BaseService {
         }
         Date expireDate = null;
         long nowTime = new Date().getTime();
-        final List<Object[]> zgjlArgs = new LinkedList<Object[]>();
-        final List<Object[]> yhArgs = new LinkedList<Object[]>();
+        List<Object[]> zgArgs = new LinkedList<Object[]>();
+        List<Object[]> yhArgs = new LinkedList<Object[]>();
+        List<Object[]> newZgArgs = new LinkedList<Object[]>();
+
         for (AbstractCommonData zg : list) {
-            if (zg.getDateValue("pzsx") == null) {
-                expireDate = zg.getDateValue("sqsx");   //如果批准时限为空，取申请时限判断
-            } else {
-                expireDate = zg.getDateValue("pzsx");
-            }
+            expireDate = zg.getDateValue("pzsx");
             if (log.isDebugEnabled()) {
                 log.debug(DateUtil.detaledFormat(expireDate));
             }
-            if (expireDate != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("时限：" + expireDate.getTime() + "， 当前时间:" + nowTime);
-                }
-                if (expireDate.getTime() < nowTime) {
-                    //如果比当前时间大
-                    zgjlArgs.add(new String[]{"5", zg.getStringValue("yh_id"),
-                                              zg.getStringValue("zg_id")});
-                    yhArgs.add(new String[]{"2", zg.getStringValue("yh_id")});
-                }
+            if (log.isDebugEnabled()) {
+                log.debug("时限：" + expireDate.getTime() + "， 当前时间:" + nowTime);
+            }
+            if (expireDate.getTime() < nowTime) {
+                //如果比当前时间大
+                zgArgs.add(new Object[]{zg.getStringValue("yh_id"),
+                                        zg.getStringValue("zg_id")});
+                yhArgs.add(new Object[]{"4", zg.getStringValue("yh_id")});
+                newZgArgs.add(new Object[]{SystemUtil.getSerialNum(), zg.getStringValue("yh_id"), zg.getDateValue("pzsx")});
             }
         }
         if (log.isInfoEnabled()) {
-            log.info("需要更新 " + zgjlArgs.size() + " 条数据。");
+            log.info("需要更新 " + zgArgs.size() + " 条数据。");
             if (log.isDebugEnabled()) {
-                for (Object[] row : zgjlArgs) {
+                for (Object[] row : zgArgs) {
                     log.debug("==>" + StringUtil.connectArray(row, ","));
                 }
                 for (Object[] row : yhArgs) {
@@ -83,7 +83,8 @@ public class ExpiredZgYh extends BaseService {
                 }
             }
         }
-        batchUpdate("update_zgjl_yh", zgjlArgs);
+        batchUpdate("update_zgjl_yh", zgArgs);
         batchUpdate("update_yhzt_yh", yhArgs);
+        batchUpdate("save_zg", newZgArgs);
     }
 }

@@ -14,7 +14,7 @@
         <script type="text/javascript" src="<c:url value='/script/jquery-ui-1.8.21.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/script/jquery.dataTables.js' />"></script>
         <!-- InstanceBeginEditable name="doctitle" -->
-        <title><%=SystemUtil.serverDesc%> -- 生产部认定</title>
+        <title><%=SystemUtil.serverDesc%> -- 隐患收购删除</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
         <script type="text/javascript">
@@ -24,7 +24,7 @@
     </head>
     <body>
         <!-- InstanceBeginEditable name="content" -->
-        <div style="margin: 10px auto 10px auto; text-align: center"><h2>生产部认定</h2></div>
+        <div style="margin: 10px auto 10px auto; text-align: center"><h2>隐患收购删除</h2></div>
         <hr />
         <div id="container" style="width: 95%;margin: 10px auto 10px auto;" align="center">
             <table class="tablelist" id="yhsgs">

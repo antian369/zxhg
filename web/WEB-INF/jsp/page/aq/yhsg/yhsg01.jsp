@@ -27,12 +27,11 @@
         <div style="margin: 10px auto 10px auto; text-align: center"><h2>隐患收购登记单</h2></div>
         <hr />
         <form id="data_form" name="data_form" class="sub_form" style="width: 80%;">
-            <table width="100%" class="table_input" border="0">
+            <table width="100%" class="tablelist" border="0">
                 <tr>
                     <td width="40%" align="right">发现人：</td>
                     <td width="60%">
-                        <input type="hidden" id="fxr" name="fxr" value="${sessionScope.ses.username.value}" />
-                        <input type="text" id="fxrxm" name="fxrxm" fn="isChinese('发现人姓名',2,'#data_form #fxrxm')" value="${sessionScope.ses.name.value}"/>
+                        <input type="text" id="fxr" name="fxr" fn="isChinese('发现人姓名',2,'#data_form #fxr')" value="${sessionScope.ses.name.value}"/>
                         <span style="color: red;">*</span>
                     </td>
                 </tr>
@@ -44,6 +43,14 @@
                                 <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
                             </c:forEach>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40%" align="right">发现时间：</td>
+                    <td width="60%">
+                        <input type="text" id="fxsj" name="fxsj" data-role="date" fn="notNull('发现时间','#data_form #fxsj')" size="12"/>
+                        <input type="text" id="fxsj_h" name="fxsj_h" value="0" fn="isNum('发现时间(时)','#data_form #fxsj_h')" size="1"/>时
+                        <span style="color: red;">*</span>
                     </td>
                 </tr>
                 <tr>

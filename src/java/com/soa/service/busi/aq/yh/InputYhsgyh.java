@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class InputYhsgyh extends BaseService {
 
     public static final String[] KEY = new String[]{"fxdw", "发现单位",
-                                                    "fxrxm", "发现人姓名",
+                                                    "fxr", "发现人",
+                                                    "fxsj","发现时间",
                                                     "yhdw", "隐患单位",
                                                     "yhdd", "隐患地点",
                                                     "yhms", "隐患描述"};
@@ -34,15 +35,17 @@ public class InputYhsgyh extends BaseService {
     @Transactional
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
                         AbstractCommonData out, AbstractCommonData outHead) {
-        Object[] args = new Object[8];
+        AbstractCommonData ses = getSession(in);
+        Object[] args = new Object[9];
         args[0] = SystemUtil.getSerialNum();
         args[1] = in.getStringValue("fxdw");
         args[2] = in.getStringValue("fxr");
-        args[3] = in.getStringValue("fxrxm");
+        args[3] = in.getDateValue("fxsj");
         args[4] = in.getStringValue("yhdw");
         args[5] = in.getStringValue("yhdd");
         args[6] = in.getStringValue("yhms");
         args[7] = getLoginUser(in);
+        args[8] = ses.getStringValue("name");
         update("save_yhsg_yh", args);
     }
 }

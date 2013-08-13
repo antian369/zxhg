@@ -6,7 +6,7 @@
 
   o.put('service_code', 'S12028');
 
-  o.put('yhlb', '3');
+  o.put('yhlb', '1');
 
   o.isPadBack = false;
 

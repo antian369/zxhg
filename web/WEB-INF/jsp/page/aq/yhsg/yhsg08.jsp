@@ -14,34 +14,124 @@
         <script type="text/javascript" src="<c:url value='/script/jquery-ui-1.8.21.min.js' />"></script>
         <script type="text/javascript" src="<c:url value='/script/jquery.dataTables.js' />"></script>
         <!-- InstanceBeginEditable name="doctitle" -->
-        <title><%=SystemUtil.serverDesc%> -- 生产部认定</title>
+        <title><%=SystemUtil.serverDesc%> -- 隐患收购清单</title>
         <!-- InstanceEndEditable -->
         <!-- InstanceBeginEditable name="head" -->
         <script type="text/javascript">
-            var dep = '${sessionScope.ses.dep_id.value}';
+            var outJson = ${out_json};
         </script>
         <!-- InstanceEndEditable -->
     </head>
     <body>
         <!-- InstanceBeginEditable name="content" -->
-        <div style="margin: 10px auto 10px auto; text-align: center"><h2>生产部认定</h2></div>
+        <div style="margin: 10px auto 10px auto; text-align: center"><h2>隐患收购清单</h2></div>
         <hr />
-        <div id="container" style="width: 95%;margin: 10px auto 10px auto;" align="center">
-            <table class="tablelist" id="yhsgs">
+        <form method="post" id="search_form" name="search_form" class="sub_form" style="width: 80%;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="33%">
+                        隐患单位：
+                        <select id="yhdw" name="yhdw">
+                            <option value="" checked>全部</option>
+                            <c:forEach items="${deps.value}" var="dep">
+                                <option value="${dep.dep_id.value}">${dep.dep_name.value}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td width="33%">
+                        隐患级别：
+                        <select id="yhjb" name="yhjb">
+                            <option value="" checked>全部</option>
+                            <c:forEach items="${requestScope['aq_yh_yhsg.yhjb']}" var="par">
+                                <option value="${par.colValue}">${par.valueDesc}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td>
+                        隐患分类：
+                        <select id="yhlb" name="yhlb">
+                            <option value="" checked>全部</option>
+                            <c:forEach items="${requestScope['aq_yh_yhsg.yhlb']}" var="par">
+                                <option value="${par.colValue}">${par.valueDesc}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        检查时间：
+                        <input type="text" data-role="date" id="begin" name="begin" size="12" />至
+                        <input type="text" data-role="date" id="end" name="end" size="12" />
+                    </td>
+                    <td align="center">
+                        <input type="submit" id="sub" value="查询" />
+                        <input type="button" id="reset" value="重置" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <hr />
+        <div id="container" style="width: 95%;margin: 10px auto 10px auto;">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="yhsgs">
                 <thead>
                     <tr>
-                        <th width="10%" data-key="fxr">发现人</th>
-                        <th width="30%" data-key="yhms">隐患描述</th>
-                        <th width="14%" data-key="fxsj">发现时间</th>
-                        <th width="14%" data-key="djsj">登记时间</th>
-                        <th width="14%" data-key="zgsj">整改时间</th>
-                        <th width="10%" data-key="zgr">整改人</th>
-                        <th data-key="opt">操作</th>
+                    <tr>
+                        <th>发现人</th>
+                        <th>隐患描述</th>
+                        <th>发现时间</th>
+                        <th>登记时间</th>
+                        <th>整改时间</th>
+                        <th>整改人</th>
+                        <th>详细</th>
+                    </tr>
                     </tr>
                 </thead>
                 <tbody>
+                    <c:forEach items="${result.value}" var="yh" varStatus="xh">
+                        <tr ind="${xh.index}">
+                            <td align="center">${yh.fxr.value}</td>
+                            <td align="center">${yh.yhms.value}</td>
+                            <td align="center">${yh.fxsj.value}</td>
+                            <td align="center">${yh.djsj.value}</td>
+                            <td align="center">${yh.zgsj.value}</td>
+                            <td align="center">${yh.zgr.value}</td>
+                            <td align="center">
+                                <a href="#this" class="info" ind="${xh.index}">查看</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
+        </div>
+        <div align="center" id="_cut_page">
+            <%-- 页码生成 begin --%>
+            <c:forEach begin="${begin_page.value}" end="${end_page.value}" var="p">
+                &nbsp;&nbsp;&nbsp;
+                <c:choose>
+                    <c:when  test="${page.value != p}">
+                        <a href="#this" page="${p}" class="page_num"> ${p} </a>
+                    </c:when>
+                    <c:otherwise>
+                        <span style="color: red">${p}</span>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            &nbsp;&nbsp;&nbsp;
+            <a href="#this" page="1" class="page_num">首页</a>/
+            <a href="#this" page="${page_count.value}" class="page_num">末页</a>
+            &nbsp;&nbsp;&nbsp;
+            共 <span style="color: red">${page_count.value}</span> 页， <span style="color: red">${count.value}</span> 条
+            <form method="post" id="page_form" name="page_form">
+                <%-- 翻页参数，还需要使用js对id=page的项进行赋值 --%>
+                <input type="hidden" id="page" name="page" value="${param.page}"/>
+                <input type="hidden" name="yhdw" value="${param.yhdw}" />
+                <input type="hidden" name="yhmc" value="${param.yhjb}" />
+                <input type="hidden" name="begin" value="${param.begin}" />
+                <input type="hidden" name="end" value="${param.end}" />
+                <input type="hidden" name="zt" value="${param.zt}" />
+                <input type="hidden" name="lazy" value="${param.yhlb}" />
+            </form>
+            <%-- 页码生成 end --%>
         </div>
 
         <%-- 收购单细信息 --%>
@@ -128,32 +218,6 @@
                     <td id="zt_desc" colspan="3"></td>
                 </tr>
             </table>
-        </div>
-
-        <%-- 认定 --%>
-        <div id="yhrd_dialog" title="隐患收购认定">
-            <form id="yhrd_form">
-                <input type="hidden" id="yh_id" name="yh_id" />
-                <table class="table_input" border="0" width="100%">
-                    <tr>
-                        <td width="30%" align="right">隐患级别：</td>
-                        <td>
-                            <select id="yhjb" name="yhjb">
-                                <c:forEach items="${requestScope['aq_yh_yhsg.yhjb']}" var="par">
-                                    <option value="${par.colValue}">${par.valueDesc}</option>
-                                </c:forEach>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="30%" align="right">认定备注：</td>
-                        <td>
-                            <textarea id="rdbz" name="rdbz" rows="5" cols="40" fn="notNull('认定备注','#yhrd_form #rdbz')" ></textarea>
-                            <span style="color: red;">*</span>
-                        </td>
-                    </tr>
-                </table>
-            </form>
         </div>
         <!-- InstanceEndEditable -->
     </body>

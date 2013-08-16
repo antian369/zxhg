@@ -8,7 +8,7 @@
 
   $("#yhsgs").dataTable(tableOrder);
 
-  $('#info').click(function() {
+  $('.info').click(function() {
     var ind, rd;
     ind = $(this).attr('ind');
     rd = outJson.result[ind];

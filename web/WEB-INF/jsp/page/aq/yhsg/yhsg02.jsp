@@ -88,40 +88,6 @@
                     <td id="djsj"></td>
                 </tr>
                 <tr>
-                    <td width="20%" style="background-color: #319ACF; color: white;">隐患核实信息：</td>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td width="20%">隐患分类：</td>
-                    <td width="30%" id="yhfl_desc"></td>
-                    <td width="20%">确认人：</td>
-                    <td width="30%" id="qrrxm"></td>
-                </tr>
-                <tr>
-                    <td width="20%">整改人：</td>
-                    <td id="zgr"></td>
-                    <td width="20%">整改时间：</td>
-                    <td id="zgsj"></td>
-                </tr>
-                <tr>
-                    <td width="20%">整改情况：</td>
-                    <td colspan="3"><textarea id="zgqk" name="zgqk" rows="5" cols="40" disabled="disabled"></textarea></td>
-                </tr>
-                <tr>
-                    <td width="20%" style="background-color: #319ACF; color: white;">隐患认定信息：</td>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td width="20%">隐患级别：</td>
-                    <td width="30%" id="yhjb_desc"></td>
-                    <td width="20%">认定人：</td>
-                    <td id="rdrxm"></td>
-                </tr>
-                <tr>
-                    <td width="20%">认定备注：</td>
-                    <td colspan="3"><textarea id="rdbz" name="rdbz" rows="5" cols="40" disabled="disabled"></textarea></td>
-                </tr>
-                <tr>
                     <td width="20%">隐患收购状态：</td>
                     <td id="zt_desc" colspan="3"></td>
                 </tr>
@@ -136,8 +102,8 @@
                     <tr>
                         <td width="30%" align="right">隐患分类：</td>
                         <td>
-                            <select id="yhfl" name="yhfl">
-                                <c:forEach items="${requestScope['aq_yh_yhsg.yhfl']}" var="par">
+                            <select id="yhlb" name="yhlb">
+                                <c:forEach items="${requestScope['aq_yh_yhsg.yhlb']}" var="par">
                                     <option value="${par.colValue}">${par.valueDesc}</option>
                                 </c:forEach>
                             </select>

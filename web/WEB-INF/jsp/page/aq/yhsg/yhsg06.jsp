@@ -97,7 +97,7 @@
                 </thead>
                 <tbody>
                     <c:forEach items="${result.value}" var="yh" varStatus="xh">
-                        <tr>
+                        <tr ind="${xh.index}">
                             <td align="center">${yh.fxr.value}</td>
                             <td align="center">${yh.yhms.value}</td>
                             <td align="center">${yh.fxsj.value}</td>

@@ -8,14 +8,14 @@
 
   $("#yhsgs").dataTable(tableOrder);
 
-  $('#info').click(function() {
+  $('.info').click(function() {
     var ind, rd;
     ind = $(this).attr('ind');
     rd = outJson.result[ind];
     padBackData(rd, '#yhsg_dialog');
     return $('#yhsg_dialog').attr({
       yh_id: rd.yh_id,
-      r: r
+      r: ind
     }).dialog('open');
   });
 

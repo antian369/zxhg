@@ -110,20 +110,6 @@
                     <td colspan="3"><textarea id="zgqk" name="zgqk" rows="5" cols="40" disabled="disabled"></textarea></td>
                 </tr>
                 <tr>
-                    <td width="20%" style="background-color: #319ACF; color: white;">隐患认定信息：</td>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td width="20%">隐患级别：</td>
-                    <td width="30%" id="yhjb_desc"></td>
-                    <td width="20%">认定人：</td>
-                    <td id="rdrxm"></td>
-                </tr>
-                <tr>
-                    <td width="20%">认定备注：</td>
-                    <td colspan="3"><textarea id="rdbz" name="rdbz" rows="5" cols="40" disabled="disabled"></textarea></td>
-                </tr>
-                <tr>
                     <td width="20%">隐患收购状态：</td>
                     <td id="zt_desc" colspan="3"></td>
                 </tr>

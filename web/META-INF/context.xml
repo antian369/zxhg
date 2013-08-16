@@ -7,10 +7,10 @@
               password="root" username="root"
               url="jdbc:mysql://localhost:3306/zxhg?useUnicode=true&amp;characterEncoding=UTF-8"/>
 
-<!--    <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
+    <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
     <Manager className="com.radiadesign.catalina.session.RedisSessionManager"
              host="127.0.0.1"
              port="6379"
              database="0"
-             maxInactiveInterval="60" />-->
+             maxInactiveInterval="60" />
 </Context>

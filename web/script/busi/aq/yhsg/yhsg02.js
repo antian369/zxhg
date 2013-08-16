@@ -41,7 +41,7 @@
 
   $("#yhsg_dialog").dialog({
     autoOpen: false,
-    height: 550,
+    height: 400,
     width: 800,
     modal: true,
     buttons: {

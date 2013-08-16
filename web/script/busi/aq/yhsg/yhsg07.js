@@ -8,14 +8,14 @@
 
   $("#yhsgs").dataTable(tableOrder);
 
-  $('#info').click(function() {
+  $('.info').click(function() {
     var ind, rd;
     ind = $(this).attr('ind');
     rd = outJson.result[ind];
     padBackData(rd, '#yhsg_dialog');
     return $('#yhsg_dialog').attr({
       yh_id: rd.yh_id,
-      r: r
+      r: ind
     }).dialog('open');
   });
 
@@ -25,6 +25,22 @@
     width: 800,
     modal: true,
     buttons: {
+      '删除': function() {
+        var o;
+        if (confirm('确定要删除吗？')) {
+          o = new AjaxOptions();
+          o.put('service_code', 'P12027');
+          o.put('yh_id', $('#yhsg_dialog').attr('yh_id'));
+          o.isAlert = false;
+          o.sus = function() {
+            var row;
+            row = $('#yhsg_dialog').attr('r');
+            $('#yhsg_dialog').dialog('close');
+            return $("tr[ind=" + row + "]").fadeOut(800);
+          };
+          return $.ajax(o);
+        }
+      },
       '关闭': function() {
         return $(this).dialog('close');
       }

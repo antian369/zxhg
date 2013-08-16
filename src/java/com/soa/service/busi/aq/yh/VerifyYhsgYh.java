@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VerifyYhsgYh extends BaseService {
 
-    private final String[] KEY = new String[]{"yhfl", "隐患分类",
+    private final String[] KEY = new String[]{"yhlb", "隐患分类",
                                                       "zgsj", "整改时间",
                                                       "zgqk", "整改情况",
                                                       "zgr", "整改人",
@@ -40,7 +40,7 @@ public class VerifyYhsgYh extends BaseService {
         AbstractCommonData ses = getSession(in);
         //update aq_yh_yhsg set zt='3',yhlb=?,zgr=?,zgqk=?,zgsj=?,qrr=?,qrrxm=? where yh_id=?
         Object[] args = new Object[7];
-        args[0] = in.getStringValue("yhfl");
+        args[0] = in.getStringValue("yhlb");
         args[1] = in.getStringValue("zgr");
         args[2] = in.getStringValue("zgqk");
         args[3] = in.getDateValue("zgsj");

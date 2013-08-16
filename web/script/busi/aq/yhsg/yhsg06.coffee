@@ -2,7 +2,7 @@
 tableOrder = $.extend(true, {}, tableTheme, {aaSorting: [[5, 'desc']]})
 $("#yhsgs").dataTable tableOrder
 
-$('#info').click ->
+$('.info').click ->
   ind = $(this).attr 'ind'
   rd = outJson.result[ind]
   padBackData rd,'#yhsg_dialog'

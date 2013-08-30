@@ -7,8 +7,10 @@ package com.soa.service.busi.pl;
 import com.lianzt.commondata.AbstractCommonData;
 import com.lianzt.factory.AESFactory;
 import com.soa.exception.GlobalException;
+import com.soa.listener.SessionListener;
 import com.soa.service.BaseService;
 import com.soa.util.SystemUtil;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class LoginPl extends BaseService {
     @Override
     @Transactional
     public void execute(AbstractCommonData in, AbstractCommonData inHead,
-                        AbstractCommonData out, AbstractCommonData outHead) {
+            AbstractCommonData out, AbstractCommonData outHead) {
         runService("S10004", in, inHead, out, outHead);
         AbstractCommonData user = queryData("get_enabled_user_pl", in.getStringValue("username"));
         if (user == null || user.isEmpty()) {
@@ -60,5 +62,15 @@ public class LoginPl extends BaseService {
         limitSet.add("update_psw");
         limitSet.add("error");
         session.putObjectValue("limit", limitSet);
+
+        //登录成功后，把登录记录记入数据库
+        String optId = SystemUtil.getSerialNum();
+        session.putStringValue("opt_id", optId);
+        session.putLongValue("login_time", new Date().getTime());
+        //update pl_login_his set zt='3' where username=? and zt='0'
+        //先重置错误操作
+        update("reset_login_his", in.getStringValue("username"));
+        //insert into pl_login_his (opt_id,username,name,login_ip,login_time,zt) value (?,?,?,?,now(),'0')
+        update("save_login_his", optId, in.getStringValue("username"), user.getStringValue("name"), inHead.getStringValue("_ip"));
     }
 }

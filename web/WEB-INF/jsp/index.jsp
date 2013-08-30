@@ -36,6 +36,7 @@
                     options.sus = function(){
                         showDialog("开始加载页面，请稍候...", 10000);
                         getTopWindows().location.href = BaseUrl + "_page/frame/welcome.do";
+                        localStorage.username=this.get('username');
                     };
                     options.fal = function(){
                         $("#check_img").click();
@@ -52,6 +53,7 @@
                         $("#sub").click();
                     }
                 });
+                $('#username').val(localStorage.username);
             });
         </script>
         <style type="text/css">

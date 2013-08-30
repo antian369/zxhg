@@ -38,6 +38,10 @@
         <description>ServletContextListener</description>
         <listener-class>com.soa.listener.ReadGlobalArgsListener</listener-class>
     </listener>
+    <listener>
+        <description>HttpSessionListener</description>
+        <listener-class>com.soa.listener.SessionListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>do</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -48,7 +52,6 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <!-- spring配置 end -->
-
     <!-- jfreechar配置 begin -->
     <servlet>
         <servlet-name>DisplayChart</servlet-name>
@@ -59,7 +62,6 @@
         <url-pattern>/DisplayChart</url-pattern>
     </servlet-mapping>
     <!-- jfreechar配置 end -->
-
     <!-- tomcat7 数据库连接池在/META-INF/context.xml 中配置 begin -->
     <resource-ref>
         <description>DB Connection</description>

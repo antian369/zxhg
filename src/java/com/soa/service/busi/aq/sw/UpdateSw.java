@@ -26,6 +26,7 @@ public class UpdateSw extends BaseService {
                                                      "swry", "三违人员",
                                                      "swxx", "三违现象",
                                                      "swfl", "三违分类",
+                                                     "hslx", "三违核实",
                                                      //"swbz", "备注",
                                                      "ssdw", "所属单位"};
 
@@ -42,7 +43,7 @@ public class UpdateSw extends BaseService {
         if (!sw.getStringValue("lrr").equals(getLoginUser(in))) {
             throw new GlobalException(200010);        //只有录入人才能修改
         }
-        Object[] args = new Object[8];
+        Object[] args = new Object[9];
         args[0] = in.getDateValue("swsj");
         args[1] = in.getStringValue("swdd");
         args[2] = in.getStringValue("swry");
@@ -50,7 +51,8 @@ public class UpdateSw extends BaseService {
         args[4] = in.getStringValue("swfl");
         args[5] = in.getStringValue("ssdw");
         args[6] = in.getStringValue("swbz");
-        args[7] = in.getStringValue("sw_id");
+        args[7] = in.getStringValue("hslx");
+        args[8] = in.getStringValue("sw_id");
         update("update_sw", args);
         //日志
         if (SystemUtil.isMin()) {

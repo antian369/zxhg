@@ -171,8 +171,14 @@ public class EncodingFilter implements Filter {
         if (log.isInfoEnabled()) {
             log.info("\n================ 新请求开始 =================\n用户的请求数据：" + acd);
         }
-        chain.doFilter(request, response);
-        BaseService.flushSession(acd);       //更新Session
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            BaseService.flushSession(acd);       //更新Session
+            if (log.isInfoEnabled()) {
+                log.info("\n---------------------- 请求结束 --------------------------");
+            }
+        }
     }
 
     public FilterConfig getFilterConfig() {

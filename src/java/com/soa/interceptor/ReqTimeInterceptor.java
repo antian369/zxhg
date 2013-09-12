@@ -135,9 +135,6 @@ public class ReqTimeInterceptor implements HandlerInterceptor {
             log.debug("开始记录可分析的日志信息。。");
         }
         LogUtil.analysisCommanDataLog(acd, "request-time");
-        if (log.isInfoEnabled()) {
-            log.info("\n---------------------- 请求结束 --------------------------");
-        }
     }
 
     /**
